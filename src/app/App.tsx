@@ -1,8 +1,8 @@
 import React from 'react';
-import Search from './components/Search';
-import CardList from './components/CardList';
-import Spinner from './components/Spinner';
-import type { ApiResponse, Character } from './types/interfaces';
+import Search from '../components/Search';
+import CardList from '../components/CardList';
+import type { ApiResponse, Character } from '../types/interfaces';
+import Spinner from '../components/Spinner';
 
 interface AppState {
   characters: Character[];
