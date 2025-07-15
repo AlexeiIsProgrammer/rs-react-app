@@ -2,22 +2,7 @@ import React from 'react';
 import Search from './components/Search';
 import CardList from './components/CardList';
 import Spinner from './components/Spinner';
-
-interface Character {
-  name: string;
-  birth_year: string;
-  gender: string;
-  height: string;
-  mass: string;
-}
-
-interface SwapiResult {
-  properties: Character;
-}
-interface SwapiResponse {
-  results?: SwapiResult[];
-  result?: SwapiResult[];
-}
+import type { ApiResponse, Character } from './types/interfaces';
 
 interface AppState {
   characters: Character[];
@@ -55,7 +40,7 @@ class App extends React.Component<object, AppState> {
         }
         return response.json();
       })
-      .then((data: SwapiResponse) => {
+      .then((data: ApiResponse) => {
         this.setState({
           characters:
             (data?.results || data?.result)?.map(
