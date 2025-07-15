@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { type FormEvent } from 'react';
+import { INPUT_PLACEHOLDER } from '../../constants';
 
 interface SearchProps {
   initialValue: string;
@@ -22,7 +23,9 @@ class Search extends React.Component<SearchProps, SearchState> {
     this.setState({ inputValue: e.target.value });
   };
 
-  handleSubmit = (): void => {
+  handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
     const processedTerm = this.state.inputValue.trim();
     this.props.onSearch(processedTerm);
   };
@@ -30,23 +33,22 @@ class Search extends React.Component<SearchProps, SearchState> {
   render() {
     return (
       <div className="w-full max-w-md mx-auto p-4 bg-white rounded-lg shadow">
-        <div className="flex gap-2">
+        <form className="flex gap-2" onSubmit={this.handleSubmit}>
           <input
             type="text"
             value={this.state.inputValue}
             onChange={this.handleChange}
-            placeholder="Search characters..."
+            placeholder={INPUT_PLACEHOLDER}
             className="flex-1 p-2 border border-gray-300 rounded"
             disabled={this.props.loading}
           />
           <button
-            onClick={this.handleSubmit}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
             disabled={this.props.loading}
           >
             {this.props.loading ? 'Searching...' : 'Search'}
           </button>
-        </div>
+        </form>
       </div>
     );
   }

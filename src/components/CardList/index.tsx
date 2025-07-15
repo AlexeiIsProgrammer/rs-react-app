@@ -1,13 +1,6 @@
 import React from 'react';
 import Card from '../Card';
-
-interface Character {
-  name: string;
-  birth_year: string;
-  gender: string;
-  height: string;
-  mass: string;
-}
+import type { Character } from '../../types/interfaces';
 
 interface CardListProps {
   characters: Character[];
