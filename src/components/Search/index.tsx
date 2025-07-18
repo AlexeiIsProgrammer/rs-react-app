@@ -33,7 +33,7 @@ class Search extends React.Component<SearchProps, SearchState> {
   render() {
     return (
       <div className="w-full max-w-md mx-auto p-4 bg-white rounded-lg shadow">
-        <form className="flex gap-2" onSubmit={this.handleSubmit}>
+        <form role="form" className="flex gap-2" onSubmit={this.handleSubmit}>
           <input
             type="text"
             value={this.state.inputValue}
@@ -41,10 +41,13 @@ class Search extends React.Component<SearchProps, SearchState> {
             placeholder={INPUT_PLACEHOLDER}
             className="flex-1 p-2 border border-gray-300 rounded"
             disabled={this.props.loading}
+            data-testid="search-input"
           />
           <button
+            type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
             disabled={this.props.loading}
+            data-testid="search-button"
           >
             {this.props.loading ? 'Searching...' : 'Search'}
           </button>

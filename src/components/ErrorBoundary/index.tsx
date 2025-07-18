@@ -28,11 +28,15 @@ class ErrorBoundary extends React.Component<
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className="p-4 bg-red-100 text-red-800 border border-red-400 rounded">
+        <div
+          className="p-4 bg-red-100 text-red-800 border border-red-400 rounded"
+          data-testid="error-message"
+        >
           <h2 className="text-xl font-bold">Something went wrong</h2>
           <button
             className="mt-2 px-4 py-2 bg-red-500 text-white rounded"
             onClick={() => this.setState({ hasError: false })}
+            data-testid="retry-button"
           >
             Retry
           </button>

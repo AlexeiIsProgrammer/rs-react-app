@@ -86,6 +86,7 @@ class App extends React.Component<object, AppState> {
             </h1>
             <div className="flex justify-center mb-4">
               <button
+                data-testid="trigger-button"
                 onClick={this.throwTestError}
                 className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
               >
@@ -105,7 +106,10 @@ class App extends React.Component<object, AppState> {
             </h2>
 
             {error ? (
-              <div className="p-4 bg-red-100 text-red-700 rounded border border-red-300">
+              <div
+                className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
+                data-testid="error-message"
+              >
                 Error: {error}
               </div>
             ) : (
