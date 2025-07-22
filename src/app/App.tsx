@@ -1,128 +1,104 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import Search from '../components/Search';
 import CardList from '../components/CardList';
 import type { ApiResponse, Character } from '../types/interfaces';
 import Spinner from '../components/Spinner';
 
-interface AppState {
+type StateType = {
   characters: Character[];
   loading: boolean;
-  error: string | null;
+  error: null | string;
   searchTerm: string;
-  boundaryError: boolean;
-}
+};
 
-class App extends React.Component<object, AppState> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      characters: [],
-      loading: false,
-      error: null,
-      searchTerm: localStorage.getItem('swapiSearch') || '',
-      boundaryError: false,
+function App() {
+  const [state, setState] = useState<StateType>({
+    characters: [],
+    loading: false,
+    error: null,
+    searchTerm: localStorage.getItem('swapiSearch') || '',
+  });
+
+  useEffect(() => {
+    const fetchCharacters = (searchTerm: string): void => {
+      setState({ ...state, loading: true, error: null });
+
+      const apiUrl = `https://www.swapi.tech/api/people/?name=${encodeURIComponent(searchTerm)}&expanded=true`;
+
+      fetch(apiUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Server responded with ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data: ApiResponse) => {
+          setState({
+            ...state,
+            characters:
+              (data?.results || data?.result)?.map(
+                (character) => character?.properties
+              ) || [],
+            loading: false,
+          });
+        })
+        .catch((error) => {
+          setState({
+            ...state,
+            error: error.message || 'Failed to fetch data',
+            loading: false,
+            characters: [],
+          });
+        });
     };
-  }
 
-  componentDidMount(): void {
-    this.fetchCharacters(this.state.searchTerm);
-  }
+    fetchCharacters(state.searchTerm);
+  }, [state.searchTerm]);
 
-  fetchCharacters = (searchTerm: string): void => {
-    this.setState({ loading: true, error: null });
-
-    const apiUrl = `https://www.swapi.tech/api/people/?name=${encodeURIComponent(searchTerm)}&expanded=true`;
-
-    fetch(apiUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Server responded with ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data: ApiResponse) => {
-        this.setState({
-          characters:
-            (data?.results || data?.result)?.map(
-              (character) => character?.properties
-            ) || [],
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          error: error.message || 'Failed to fetch data',
-          loading: false,
-          characters: [],
-        });
-      });
-  };
-
-  handleSearch = (term: string): void => {
+  const handleSearch = (term: string): void => {
     localStorage.setItem('swapiSearch', term);
-    this.setState({ searchTerm: term }, () => {
-      this.fetchCharacters(term);
-    });
+    setState({ ...state, searchTerm: term });
   };
 
-  throwTestError = (): void => {
-    this.setState({
-      boundaryError: true,
-    });
-  };
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-6">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
+            Star Wars Character Search
+          </h1>
 
-  render() {
-    const { characters, loading, error, searchTerm, boundaryError } =
-      this.state;
+          <Search
+            initialValue={state.searchTerm}
+            onSearch={handleSearch}
+            loading={state.loading}
+          />
+        </div>
 
-    if (boundaryError) throw new Error('Test error triggered by button click');
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            {state.searchTerm
+              ? `Results for "${state.searchTerm}"`
+              : 'All Characters'}
+          </h2>
 
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-6">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
-              Star Wars Character Search
-            </h1>
-            <div className="flex justify-center mb-4">
-              <button
-                data-testid="trigger-button"
-                onClick={this.throwTestError}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                Trigger Test Error
-              </button>
+          {state.error ? (
+            <div
+              className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
+              data-testid="error-message"
+            >
+              Error: {state.error}
             </div>
-            <Search
-              initialValue={searchTerm}
-              onSearch={this.handleSearch}
-              loading={loading}
-            />
-          </div>
-
-          <div className="mt-8">
-            <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-              {searchTerm ? `Results for "${searchTerm}"` : 'All Characters'}
-            </h2>
-
-            {error ? (
-              <div
-                className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
-                data-testid="error-message"
-              >
-                Error: {error}
-              </div>
-            ) : (
-              <>
-                {loading && <Spinner />}
-                <CardList characters={characters} loading={loading} />
-              </>
-            )}
-          </div>
+          ) : (
+            <>
+              {state.loading && <Spinner />}
+              <CardList characters={state.characters} loading={state.loading} />
+            </>
+          )}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default App;
