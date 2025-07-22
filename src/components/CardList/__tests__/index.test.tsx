@@ -34,10 +34,8 @@ describe('CardList Component', () => {
   });
 
   it('shows loading state while fetching data', () => {
-    const { container } = render(<CardList characters={[]} loading={true} />);
-    expect(
-      container.querySelectorAll('div.animate-pulse').length
-    ).toBeGreaterThan(0);
+    render(<CardList characters={[]} loading={true} />);
+    expect(screen.getAllByTestId('skeleton')).toHaveLength(5);
   });
 
   it('correctly displays item names and descriptions', () => {
