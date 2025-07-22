@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { vi, describe, it, expect } from 'vitest';
 import ErrorBoundary from '../index';
 
@@ -24,13 +24,14 @@ describe('ErrorBoundary Component', () => {
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
       .mockImplementation(() => {});
-    const { container } = render(
+
+    render(
       <ErrorBoundary>
         <ProblemChild />
       </ErrorBoundary>
     );
 
-    expect(within(container).getByTestId('retry-button')).toBeInTheDocument();
+    expect(screen.getByTestId('retry-button')).toBeInTheDocument();
     consoleErrorSpy.mockRestore();
   });
 

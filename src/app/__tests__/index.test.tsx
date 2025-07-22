@@ -62,10 +62,8 @@ describe('App Component', () => {
 
     render(<App />);
 
-    const inputs = screen.getAllByTestId('search-input');
-    const input = inputs[0];
-    const buttons = screen.getAllByTestId('search-button');
-    const button = buttons[0];
+    const input = screen.getByTestId('search-input');
+    const button = screen.getByTestId('search-button');
 
     fireEvent.change(input, { target: { value: SEARCHED_TERM } });
     fireEvent.click(button);

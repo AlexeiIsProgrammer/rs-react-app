@@ -27,7 +27,10 @@ const CardList: React.FC<CardListProps> = ({ characters, loading }) => {
 
   if (characters.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div
+        data-testid="not-items-found"
+        className="text-center py-8 text-gray-500"
+      >
         No characters found. Try a different search term.
       </div>
     );

@@ -6,7 +6,10 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ character }) => (
-  <div className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow">
+  <div
+    data-testid="card"
+    className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+  >
     <h3 className="text-lg font-semibold text-gray-800">{character.name}</h3>
     <p className="text-gray-600">
       Born: {character.birth_year} | Gender: {character.gender}

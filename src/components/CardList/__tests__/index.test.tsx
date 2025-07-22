@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import CardList from '../index';
 
@@ -6,13 +6,13 @@ const charactersMock = [
   {
     name: 'Luke Skywalker',
     birth_year: '19BBY',
-    gender: 'male',
+    gender: 'other',
     height: '172',
     mass: '77',
   },
   {
     name: 'Leia Organa',
-    birth_year: '19BBY',
+    birth_year: '19BYT',
     gender: 'female',
     height: '150',
     mass: '49',
@@ -21,16 +21,14 @@ const charactersMock = [
 
 describe('CardList Component', () => {
   it('renders correct number of items when data is provided', () => {
-    const { container } = render(
-      <CardList characters={charactersMock} loading={false} />
-    );
-    const cards = within(container).getAllByText(/Born:/i);
+    render(<CardList characters={charactersMock} loading={false} />);
+    const cards = screen.getAllByTestId('card');
     expect(cards.length).toBe(charactersMock.length);
   });
 
   it('displays "no results" message when data array is empty', () => {
     render(<CardList characters={[]} loading={false} />);
-    expect(screen.getByText(/no characters found/i)).toBeInTheDocument();
+    expect(screen.getByTestId('not-items-found')).toBeInTheDocument();
   });
 
   it('shows loading state while fetching data', () => {
@@ -40,9 +38,18 @@ describe('CardList Component', () => {
 
   it('correctly displays item names and descriptions', () => {
     render(<CardList characters={charactersMock} loading={false} />);
-    expect(screen.getAllByText('Luke Skywalker')[0]).toBeInTheDocument();
-    expect(screen.getAllByText(/Born: 19BBY/i)[0]).toBeInTheDocument();
-    expect(screen.getAllByText(/Gender: male/i)[0]).toBeInTheDocument();
+
+    charactersMock.forEach((character) => {
+      expect(
+        screen.getByText(new RegExp(character.name, 'i'))
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(new RegExp(character.birth_year, 'i'))
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(new RegExp(character.gender, 'i'))
+      ).toBeInTheDocument();
+    });
   });
 
   it('handles missing or undefined data gracefully', () => {
