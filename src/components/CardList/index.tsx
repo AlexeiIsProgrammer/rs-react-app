@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../Card';
 import type { Character } from '../../types/interfaces';
 import { useNavigate, useParams } from 'react-router';
+import { MAIN_ROUTE } from '../../constants';
 
 interface CardListProps {
   characters: Character[];
@@ -13,7 +14,7 @@ const CardList = ({ characters, isLoading }: CardListProps) => {
 
   const { detailsId: id } = useParams();
 
-  const onCardClickHandle = (id: string) => navigate(`/${id}`);
+  const onCardClickHandle = (id: string) => navigate(`${MAIN_ROUTE}/${id}`);
 
   if (isLoading) {
     return (

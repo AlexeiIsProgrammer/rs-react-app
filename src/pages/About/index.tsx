@@ -40,6 +40,7 @@ const About = () => {
             curriculum.
           </p>
           <a
+            title="React course"
             href="https://rs.school/courses/reactjs"
             target="_blank"
             rel="noopener noreferrer"
@@ -51,6 +52,7 @@ const About = () => {
 
         <div className="border-t pt-6">
           <Link
+            title="Back to main"
             to="/"
             className="text-blue-600 hover:text-blue-800 hover:underline"
           >

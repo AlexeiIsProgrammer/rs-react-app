@@ -17,6 +17,7 @@ const Item = () => {
     <div className="lg:w-1/3 flex-shrink-0 relative">
       <div className="bg-white p-6 rounded-lg shadow-md sticky top-6 overflow-y-auto">
         <button
+          title="close"
           onClick={closePanel}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
           aria-label="Close panel"
@@ -45,7 +46,10 @@ const Item = () => {
             <Spinner />
           </div>
         ) : error ? (
-          <div className="p-4 bg-red-100 text-red-700 rounded border border-red-300">
+          <div
+            data-testid="error-message"
+            className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
+          >
             {error}
           </div>
         ) : data ? (

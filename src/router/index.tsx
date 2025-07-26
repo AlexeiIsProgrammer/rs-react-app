@@ -1,9 +1,17 @@
-import { createBrowserRouter, createRoutesStub } from 'react-router';
+import {
+  createBrowserRouter,
+  createMemoryRouter,
+  createRoutesStub,
+  redirect,
+  RouterProvider,
+} from 'react-router';
 import App from '../app/App';
 import Item from '../pages/Item';
 import NotFound from '../pages/NotFound';
 import Main from '../pages/Main';
 import About from '../pages/About';
+import type { JSX } from 'react';
+import { MAIN_ROUTE } from '../constants';
 
 const routes = [
   {
@@ -11,26 +19,54 @@ const routes = [
     Component: App,
     children: [
       {
-        path: '/',
+        index: true,
+        loader: () => redirect(MAIN_ROUTE),
+        Component: () => null,
+      },
+      {
+        path: 'main',
         Component: Main,
         children: [
           {
-            path: '/:detailsId',
+            path: ':detailsId',
             Component: Item,
           },
         ],
       },
       {
-        path: '/about',
+        path: 'about',
         Component: About,
       },
+      {
+        path: '*',
+        Component: NotFound,
+      },
     ],
-    errorElement: <NotFound />,
   },
 ];
 
 const router = createBrowserRouter(routes);
 
 export const Stub = createRoutesStub(routes);
+
+export const StubProvider = ({
+  element,
+  route,
+}: {
+  element: JSX.Element;
+  route?: string;
+}) => {
+  const router = createMemoryRouter(
+    [
+      {
+        path: route || '/',
+        element,
+      },
+    ],
+    { initialEntries: ['/'] }
+  );
+
+  return <RouterProvider router={router} />;
+};
 
 export default router;

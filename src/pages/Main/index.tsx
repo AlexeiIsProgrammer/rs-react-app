@@ -6,7 +6,7 @@ import Pagination from '../../components/Pagination';
 import useGetItems from '../../hooks/useGetItems';
 import { Outlet, useNavigate, useSearchParams } from 'react-router';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import { LOCAL_STORAGE_SEARCH } from '../../constants';
+import { LOCAL_STORAGE_SEARCH, MAIN_ROUTE } from '../../constants';
 
 const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
@@ -35,7 +35,7 @@ const Main = () => {
     setSearch(term);
   };
 
-  const onMainPanelClick = () => navigate('/');
+  const onMainPanelClick = () => navigate(MAIN_ROUTE);
 
   return (
     <div className="container mx-auto px-4 py-6">
