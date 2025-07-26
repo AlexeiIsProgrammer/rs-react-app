@@ -1,37 +1,35 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import App from '../App';
+import { mockCharacter } from '../../../tests/setup';
+import { Stub } from '../../router';
 
-describe('App Component', () => {
+const SEARCHED_TEXT = 'Luke Skywalker';
+const SEARCHED_TERM = 'Luke';
+
+describe('Main Component', () => {
   beforeEach(() => {
     localStorage.clear();
   });
 
   it('makes initial API call on component mount and handles search term from localStorage', async () => {
-    const mockCharacters = [
-      {
-        name: 'Luke Skywalker',
-        birth_year: '19BBY',
-        gender: 'male',
-        height: '172',
-        mass: '77',
-      },
-    ];
+    const mockCharacters = [mockCharacter];
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
       json: async () => ({
-        results: mockCharacters.map((c) => ({ properties: c })),
+        results: mockCharacters.map((character) => ({
+          properties: character,
+          uid: '1',
+        })),
       }),
     } as Response);
 
-    localStorage.setItem('swapiSearch', 'Luke');
+    localStorage.setItem('swapiSearch', SEARCHED_TERM);
 
-    render(<App />);
+    render(<Stub initialEntries={['/main']} />);
 
     await waitFor(() => {
       expect(screen.getByText(/Results for "Luke"/i)).toBeInTheDocument();
-      expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+      expect(screen.getByText(SEARCHED_TEXT)).toBeInTheDocument();
     });
   });
 
@@ -48,7 +46,7 @@ describe('App Component', () => {
         })
     );
 
-    render(<App />);
+    render(<Stub initialEntries={['/main']} />);
     expect(screen.getByText(/searching.../i)).toBeInTheDocument();
 
     await waitFor(() => {
@@ -57,34 +55,27 @@ describe('App Component', () => {
   });
 
   it('calls API with correct parameters and handles successful API responses', async () => {
-    const mockCharacters = [
-      {
-        name: 'Leia Organa',
-        birth_year: '19BBY',
-        gender: 'female',
-        height: '150',
-        mass: '49',
-      },
-    ];
+    const mockCharacters = [mockCharacter];
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
       json: async () => ({
-        results: mockCharacters.map((c) => ({ properties: c })),
+        results: mockCharacters.map((character) => ({
+          properties: character,
+          uid: '1',
+        })),
       }),
     } as Response);
 
-    render(<App />);
+    render(<Stub initialEntries={['/main']} />);
 
-    const inputs = screen.getAllByTestId('search-input');
-    const input = inputs[0];
-    const buttons = screen.getAllByTestId('search-button');
-    const button = buttons[0];
+    const input = screen.getByTestId('search-input');
+    const button = screen.getByTestId('search-button');
 
-    fireEvent.change(input, { target: { value: 'Leia' } });
+    fireEvent.change(input, { target: { value: SEARCHED_TERM } });
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(screen.getByText('Leia Organa')).toBeInTheDocument();
+      expect(screen.getByText(SEARCHED_TEXT)).toBeInTheDocument();
     });
   });
 
@@ -95,7 +86,7 @@ describe('App Component', () => {
       json: async () => ({}),
     } as Response);
 
-    render(<App />);
+    render(<Stub initialEntries={['/main']} />);
 
     await waitFor(() => {
       expect(screen.getByTestId('error-message')).toBeInTheDocument();
@@ -103,35 +94,30 @@ describe('App Component', () => {
   });
 
   it('saves search term to localStorage when searching', async () => {
-    const mockCharacters = [
-      {
-        name: 'Han Solo',
-        birth_year: '29BBY',
-        gender: 'male',
-        height: '180',
-        mass: '80',
-      },
-    ];
+    const mockCharacters = [mockCharacter];
 
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
       json: async () => ({
-        results: mockCharacters.map((c) => ({ properties: c })),
+        results: mockCharacters.map((character) => ({
+          properties: character,
+          uid: '1',
+        })),
       }),
     } as Response);
 
-    render(<App />);
+    render(<Stub initialEntries={['/main']} />);
 
     const input = screen.getByTestId('search-input');
 
-    fireEvent.change(input, { target: { value: 'Han' } });
+    fireEvent.change(input, { target: { value: SEARCHED_TERM } });
 
     const form = screen.getByRole('form');
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(screen.getByText('Han Solo')).toBeInTheDocument();
-      expect(localStorage.getItem('swapiSearch')).toBe('Han');
+      expect(screen.getByText(SEARCHED_TEXT)).toBeInTheDocument();
+      expect(localStorage.getItem('swapiSearch')).toBe(SEARCHED_TERM);
     });
   });
 });
