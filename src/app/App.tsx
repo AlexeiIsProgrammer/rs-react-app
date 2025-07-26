@@ -1,63 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Search from '../components/Search';
 import CardList from '../components/CardList';
-import type { ApiResponse, Character } from '../types/interfaces';
 import Spinner from '../components/Spinner';
-
-type StateType = {
-  characters: Character[];
-  loading: boolean;
-  error: null | string;
-  searchTerm: string;
-};
+import Pagination from '../components/Pagination';
+import useGetItems from '../hooks/useGetItems';
 
 function App() {
-  const [state, setState] = useState<StateType>({
-    characters: [],
-    loading: false,
-    error: null,
-    searchTerm: localStorage.getItem('swapiSearch') || '',
-  });
+  const [search, setSearch] = useState<string>(
+    localStorage.getItem('swapiSearch') || ''
+  );
+  const [limit] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
 
-  useEffect(() => {
-    const fetchCharacters = (searchTerm: string): void => {
-      setState({ ...state, loading: true, error: null });
-
-      const apiUrl = `https://www.swapi.tech/api/people/?name=${encodeURIComponent(searchTerm)}&expanded=true`;
-
-      fetch(apiUrl)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Server responded with ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data: ApiResponse) => {
-          setState({
-            ...state,
-            characters:
-              (data?.results || data?.result)?.map(
-                (character) => character?.properties
-              ) || [],
-            loading: false,
-          });
-        })
-        .catch((error) => {
-          setState({
-            ...state,
-            error: error.message || 'Failed to fetch data',
-            loading: false,
-            characters: [],
-          });
-        });
-    };
-
-    fetchCharacters(state.searchTerm);
-  }, [state.searchTerm]);
+  const { data, isLoading, error } = useGetItems({ search, limit, page });
 
   const handleSearch = (term: string): void => {
     localStorage.setItem('swapiSearch', term);
-    setState({ ...state, searchTerm: term });
+    setSearch(term);
   };
 
   return (
@@ -69,30 +28,38 @@ function App() {
           </h1>
 
           <Search
-            initialValue={state.searchTerm}
+            initialValue={search}
             onSearch={handleSearch}
-            loading={state.loading}
+            loading={isLoading}
           />
         </div>
 
         <div className="mt-8">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            {state.searchTerm
-              ? `Results for "${state.searchTerm}"`
-              : 'All Characters'}
+            {search ? `Results for "${search}"` : 'All Characters'}
           </h2>
 
-          {state.error ? (
+          {error ? (
             <div
               className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
               data-testid="error-message"
             >
-              Error: {state.error}
+              Error: {error}
             </div>
           ) : (
             <>
-              {state.loading && <Spinner />}
-              <CardList characters={state.characters} loading={state.loading} />
+              {isLoading && <Spinner />}
+              {data && (
+                <>
+                  <CardList characters={data.data} isLoading={isLoading} />
+                  <Pagination
+                    itemsPerPage={limit}
+                    totalItems={data.total}
+                    currentPage={page}
+                    onPageChange={(page) => setPage(page)}
+                  />
+                </>
+              )}
             </>
           )}
         </div>

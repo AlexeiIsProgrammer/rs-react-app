@@ -4,11 +4,11 @@ import type { Character } from '../../types/interfaces';
 
 interface CardListProps {
   characters: Character[];
-  loading: boolean;
+  isLoading: boolean;
 }
 
-const CardList: React.FC<CardListProps> = ({ characters, loading }) => {
-  if (loading) {
+const CardList = ({ characters, isLoading }: CardListProps) => {
+  if (isLoading) {
     return (
       <div className="space-y-4">
         {[...Array(5)].map((_, i) => (

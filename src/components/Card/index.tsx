@@ -1,11 +1,6 @@
-import React from 'react';
-import type { Character } from '../../types/interfaces';
+import type { CardProps } from './types';
 
-interface CardProps {
-  character: Character;
-}
-
-const Card: React.FC<CardProps> = ({ character }) => (
+const Card = ({ character }: CardProps) => (
   <div
     data-testid="card"
     className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
