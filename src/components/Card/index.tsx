@@ -1,9 +1,10 @@
 import type { CardProps } from './types';
 
-const Card = ({ character }: CardProps) => (
+const Card = ({ character, onClick, isActive }: CardProps) => (
   <div
+    onClick={() => onClick(character.id)}
     data-testid="card"
-    className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+    className={`p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow ${isActive ? 'shadow-lg' : ''}`}
   >
     <h3 className="text-lg font-semibold text-gray-800">{character.name}</h3>
     <p className="text-gray-600">

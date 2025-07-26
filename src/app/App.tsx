@@ -4,6 +4,7 @@ import CardList from '../components/CardList';
 import Spinner from '../components/Spinner';
 import Pagination from '../components/Pagination';
 import useGetItems from '../hooks/useGetItems';
+import { Outlet } from 'react-router';
 
 function App() {
   const [search, setSearch] = useState<string>(
@@ -26,7 +27,6 @@ function App() {
           <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
             Star Wars Character Search
           </h1>
-
           <Search
             initialValue={search}
             onSearch={handleSearch}
@@ -34,34 +34,38 @@ function App() {
           />
         </div>
 
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            {search ? `Results for "${search}"` : 'All Characters'}
-          </h2>
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex-1">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+              {search ? `Results for "${search}"` : 'All Characters'}
+            </h2>
 
-          {error ? (
-            <div
-              className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
-              data-testid="error-message"
-            >
-              Error: {error}
-            </div>
-          ) : (
-            <>
-              {isLoading && <Spinner />}
-              {data && (
-                <>
-                  <CardList characters={data.data} isLoading={isLoading} />
-                  <Pagination
-                    itemsPerPage={limit}
-                    totalItems={data.total}
-                    currentPage={page}
-                    onPageChange={(page) => setPage(page)}
-                  />
-                </>
-              )}
-            </>
-          )}
+            {error ? (
+              <div
+                className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
+                data-testid="error-message"
+              >
+                Error: {error}
+              </div>
+            ) : (
+              <>
+                {isLoading && <Spinner />}
+                {data && (
+                  <>
+                    <CardList characters={data.data} isLoading={isLoading} />
+                    <Pagination
+                      itemsPerPage={limit}
+                      totalItems={data.total}
+                      currentPage={page}
+                      onPageChange={(page) => setPage(page)}
+                    />
+                  </>
+                )}
+              </>
+            )}
+          </div>
+
+          <Outlet />
         </div>
       </div>
     </div>

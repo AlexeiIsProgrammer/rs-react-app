@@ -1,4 +1,9 @@
-import type { ApiResponse, GetItemsResponse } from '../types/interfaces';
+import type {
+  ApiResponse,
+  Character,
+  GetItemsResponse,
+  Result,
+} from '../types/interfaces';
 
 class ApiService {
   private static readonly baseUrl: string = 'https://www.swapi.tech/api';
@@ -35,12 +40,36 @@ class ApiService {
 
       return {
         data:
-          (data.results || data.result)?.map((item) => item.properties) || [],
+          (data.results || data.result)?.map((item) => ({
+            ...item.properties,
+            id: item.uid,
+          })) || [],
         total: data.total_records || 0,
         page,
         limit,
         totalPages: data.total_pages,
       };
+    } catch (error) {
+      console.error('Error fetching items:', error);
+      throw error;
+    }
+  }
+  static async getItem(id: string): Promise<Character> {
+    try {
+      const response = await fetch(`${this.baseUrl}/people/${id}`, {
+        method: 'GET',
+        headers: {
+          ...this.defaultHeaders,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data: Result = (await response.json()).result;
+
+      return { ...data.properties, id: data.uid };
     } catch (error) {
       console.error('Error fetching items:', error);
       throw error;

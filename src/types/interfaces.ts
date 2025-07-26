@@ -4,10 +4,12 @@ export interface Character {
   gender: string;
   height: string;
   mass: string;
+  id: string;
 }
 
 export interface Result {
   properties: Character;
+  uid: string;
 }
 export interface ApiResponse {
   results?: Result[];
