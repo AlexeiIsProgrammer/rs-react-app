@@ -2,7 +2,11 @@ import type { CardProps } from './types';
 
 const Card = ({ character, onClick, isActive }: CardProps) => (
   <div
-    onClick={() => onClick(character.id)}
+    onClick={(e) => {
+      e.stopPropagation();
+
+      onClick(character.id);
+    }}
     data-testid="card"
     className={`p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow ${isActive ? 'shadow-lg' : ''}`}
   >

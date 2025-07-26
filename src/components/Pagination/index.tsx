@@ -27,11 +27,19 @@ const Pagination = ({
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
 
+  const onClickButtonHandle =
+    (e: React.MouseEvent<HTMLButtonElement>) => (fn: () => void) => {
+      e.stopPropagation();
+      fn();
+    };
+
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
         <button
-          onClick={() => handlePageChange(currentPage - 1)}
+          onClick={(e) =>
+            onClickButtonHandle(e)(() => handlePageChange(currentPage - 1))
+          }
           disabled={currentPage === 1}
           className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${
             currentPage === 1
@@ -42,7 +50,9 @@ const Pagination = ({
           Previous
         </button>
         <button
-          onClick={() => handlePageChange(currentPage + 1)}
+          onClick={(e) =>
+            onClickButtonHandle(e)(() => handlePageChange(currentPage + 1))
+          }
           disabled={currentPage === totalPages}
           className={`relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${
             currentPage === totalPages
@@ -74,7 +84,9 @@ const Pagination = ({
             aria-label="Pagination"
           >
             <button
-              onClick={() => handlePageChange(currentPage - 1)}
+              onClick={(e) =>
+                onClickButtonHandle(e)(() => handlePageChange(currentPage - 1))
+              }
               disabled={currentPage === 1}
               className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0 ${
                 currentPage === 1 ? 'cursor-not-allowed' : 'hover:bg-gray-50'
@@ -98,7 +110,9 @@ const Pagination = ({
             {currentPage > Math.ceil(maxVisiblePages / 2) &&
               totalPages > maxVisiblePages && (
                 <button
-                  onClick={() => handlePageChange(1)}
+                  onClick={(e) =>
+                    onClickButtonHandle(e)(() => handlePageChange(1))
+                  }
                   className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                 >
                   1
@@ -115,7 +129,9 @@ const Pagination = ({
             {getPageNumbers().map((page) => (
               <button
                 key={page}
-                onClick={() => handlePageChange(page)}
+                onClick={(e) =>
+                  onClickButtonHandle(e)(() => handlePageChange(page))
+                }
                 aria-current={page === currentPage ? 'page' : undefined}
                 className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
                   page === currentPage
@@ -137,7 +153,9 @@ const Pagination = ({
             {currentPage <= totalPages - Math.floor(maxVisiblePages / 2) &&
               totalPages > maxVisiblePages && (
                 <button
-                  onClick={() => handlePageChange(totalPages)}
+                  onClick={(e) =>
+                    onClickButtonHandle(e)(() => handlePageChange(totalPages))
+                  }
                   className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                 >
                   {totalPages}
@@ -145,7 +163,9 @@ const Pagination = ({
               )}
 
             <button
-              onClick={() => handlePageChange(currentPage + 1)}
+              onClick={(e) =>
+                onClickButtonHandle(e)(() => handlePageChange(currentPage + 1))
+              }
               disabled={currentPage === totalPages}
               className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0 ${
                 currentPage === totalPages

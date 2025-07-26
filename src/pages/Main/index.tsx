@@ -4,12 +4,14 @@ import CardList from '../../components/CardList';
 import Spinner from '../../components/Spinner';
 import Pagination from '../../components/Pagination';
 import useGetItems from '../../hooks/useGetItems';
-import { Outlet, useSearchParams } from 'react-router';
+import { Outlet, useNavigate, useSearchParams } from 'react-router';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { LOCAL_STORAGE_SEARCH } from '../../constants';
 
 const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
+
+  const navigate = useNavigate();
 
   const [search, setSearch] = useState<string>(value);
   const [limit] = useState<number>(10);
@@ -33,6 +35,8 @@ const Main = () => {
     setSearch(term);
   };
 
+  const onMainPanelClick = () => navigate('/');
+
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="mb-8">
@@ -47,7 +51,7 @@ const Main = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        <div className="flex-1">
+        <div onClick={onMainPanelClick} className="flex-1">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">
             {search ? `Results for "${search}"` : 'All Characters'}
           </h2>
