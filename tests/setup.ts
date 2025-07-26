@@ -6,6 +6,7 @@ export const mockCharacter = {
   gender: 'male',
   height: '172',
   mass: '77',
+  id: '1',
 };
 
 export const brokenCharacter = {
@@ -14,4 +15,5 @@ export const brokenCharacter = {
   gender: '',
   height: '',
   mass: '',
+  id: '',
 };

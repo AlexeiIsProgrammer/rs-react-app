@@ -1,11 +1,11 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, createRoutesStub } from 'react-router';
 import App from '../app/App';
 import Item from '../pages/Item';
 import NotFound from '../pages/NotFound';
 import Main from '../pages/Main';
 import About from '../pages/About';
 
-const router = createBrowserRouter([
+const routes = [
   {
     path: '/',
     Component: App,
@@ -27,6 +27,10 @@ const router = createBrowserRouter([
     ],
     errorElement: <NotFound />,
   },
-]);
+];
+
+const router = createBrowserRouter(routes);
+
+export const Stub = createRoutesStub(routes);
 
 export default router;

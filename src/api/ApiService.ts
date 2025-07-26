@@ -42,7 +42,7 @@ class ApiService {
         data:
           (data.results || data.result)?.map((item) => ({
             ...item.properties,
-            id: item.uid,
+            id: item?.uid,
           })) || [],
         total: data.total_records || 0,
         page,
@@ -69,7 +69,7 @@ class ApiService {
 
       const data: Result = (await response.json()).result;
 
-      return { ...data.properties, id: data.uid };
+      return { ...data?.properties, id: data?.uid };
     } catch (error) {
       console.error('Error fetching items:', error);
       throw error;
