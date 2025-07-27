@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { vi, describe, beforeEach, it, expect } from 'vitest';
 import Search from '../index';

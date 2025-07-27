@@ -1,4 +1,3 @@
-import React from 'react';
 import Card from '../Card';
 import type { Character } from '../../types/interfaces';
 import { useNavigate, useParams } from 'react-router';
