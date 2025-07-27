@@ -45,7 +45,7 @@ export const routes = [
   },
 ];
 
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes, { basename: '/rs-react-app' });
 
 export const Stub = createRoutesStub(routes);
 
