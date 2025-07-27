@@ -1,27 +1,34 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { mockCharacter } from '../../../../tests/setup';
-import { Stub } from '../../../router';
+import { routes, Stub } from '../../../router';
+import { createMemoryRouter, RouterProvider } from 'react-router';
+import { MAIN_ROUTE } from '../../../constants';
 
 const SEARCHED_TEXT = 'Luke Skywalker';
 const SEARCHED_TERM = 'Luke';
 
 describe('Main Component', () => {
+  const responseMock = {
+    results: [mockCharacter].map((character) => ({
+      properties: character,
+      uid: '1',
+    })),
+    total_records: 101,
+    page: 1,
+    limit: 10,
+    total_pages: 10,
+  };
+
   beforeEach(() => {
     vi.resetAllMocks();
     localStorage.clear();
   });
 
   it('makes initial API call on component mount and handles search term from localStorage', async () => {
-    const mockCharacters = [mockCharacter];
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
-      json: async () => ({
-        results: mockCharacters.map((character) => ({
-          properties: character,
-          uid: '1',
-        })),
-      }),
+      json: async () => responseMock,
     } as Response);
 
     localStorage.setItem('swapiSearch', SEARCHED_TERM);
@@ -56,15 +63,9 @@ describe('Main Component', () => {
   });
 
   it('calls API with correct parameters and handles successful API responses', async () => {
-    const mockCharacters = [mockCharacter];
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
-      json: async () => ({
-        results: mockCharacters.map((character) => ({
-          properties: character,
-          uid: '1',
-        })),
-      }),
+      json: async () => responseMock,
     } as Response);
 
     render(<Stub initialEntries={['/main']} />);
@@ -95,16 +96,9 @@ describe('Main Component', () => {
   });
 
   it('saves search term to localStorage when searching', async () => {
-    const mockCharacters = [mockCharacter];
-
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
-      json: async () => ({
-        results: mockCharacters.map((character) => ({
-          properties: character,
-          uid: '1',
-        })),
-      }),
+      json: async () => responseMock,
     } as Response);
 
     render(<Stub initialEntries={['/main']} />);
@@ -119,6 +113,28 @@ describe('Main Component', () => {
     await waitFor(() => {
       expect(screen.getByText(SEARCHED_TEXT)).toBeInTheDocument();
       expect(localStorage.getItem('swapiSearch')).toBe(SEARCHED_TERM);
+    });
+  });
+  it('handle pagination page change', async () => {
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => responseMock,
+    } as Response);
+
+    const router = createMemoryRouter(routes, {
+      initialEntries: [`${MAIN_ROUTE}?page=1`],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    await waitFor(() => {
+      const nextPaginationButton = screen.getByTitle('next');
+
+      expect(router.state.location.search).toBe('?page=1');
+
+      fireEvent.click(nextPaginationButton);
+
+      expect(router.state.location.search).toBe('?page=2');
     });
   });
 });

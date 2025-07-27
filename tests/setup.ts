@@ -17,3 +17,9 @@ export const brokenCharacter = {
   mass: '',
   id: '',
 };
+
+export const setViewport = (width: number, height: number = 720) => {
+  window.innerWidth = width;
+  window.innerHeight = height;
+  window.dispatchEvent(new Event('resize'));
+};

@@ -1,13 +1,16 @@
 import {
+  fireEvent,
   render,
   screen,
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { StubProvider } from '../../../router';
+import { routes, StubProvider } from '../../../router';
 import { mockCharacter } from '../../../../tests/setup';
 import Item from '..';
+import { createMemoryRouter, RouterProvider } from 'react-router';
+import { MAIN_ROUTE } from '../../../constants';
 
 describe('Item page', () => {
   const responseMock = { result: { properties: mockCharacter, uid: '1' } };
@@ -66,20 +69,24 @@ describe('Item page', () => {
 
     render(<StubProvider element={<Item />} />);
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByTestId('error-message')).toBeInTheDocument();
     });
   });
 
-  // it('handles click on close panel', async () => {
-  //   render(<Stub initialEntries={['/main/2']} />);
+  it('handles click on close panel', async () => {
+    const router = createMemoryRouter(routes, {
+      initialEntries: [`${MAIN_ROUTE}/2`],
+    });
 
-  //   const closeButton = screen.getByTitle('close');
+    render(<RouterProvider router={router} />);
 
-  //   expect(location.pathname).toBe('/main/2');
+    const closeButton = screen.getByTitle('close');
 
-  //   fireEvent.click(closeButton);
+    expect(router.state.location.pathname).toBe(`${MAIN_ROUTE}/2`);
 
-  //   expect(location.pathname).toBe('/main');
-  // });
+    fireEvent.click(closeButton);
+
+    expect(router.state.location.pathname).toBe(MAIN_ROUTE);
+  });
 });

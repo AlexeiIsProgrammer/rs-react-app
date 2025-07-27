@@ -13,7 +13,7 @@ import About from '../pages/About';
 import type { JSX } from 'react';
 import { MAIN_ROUTE } from '../constants';
 
-const routes = [
+export const routes = [
   {
     path: '/',
     Component: App,
