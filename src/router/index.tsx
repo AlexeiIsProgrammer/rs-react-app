@@ -1,5 +1,5 @@
 import {
-  createBrowserRouter,
+  createHashRouter,
   createMemoryRouter,
   createRoutesStub,
   redirect,
@@ -45,7 +45,7 @@ export const routes = [
   },
 ];
 
-const router = createBrowserRouter(routes, { basename: '/rs-react-app' });
+const router = createHashRouter(routes);
 
 export const Stub = createRoutesStub(routes);
 

@@ -4,7 +4,7 @@ import CardList from '../../components/CardList';
 import Spinner from '../../components/Spinner';
 import Pagination from '../../components/Pagination';
 import useGetItems from '../../hooks/useGetItems';
-import { Outlet, useNavigate, useSearchParams } from 'react-router';
+import { Link, Outlet, useNavigate, useSearchParams } from 'react-router';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { LOCAL_STORAGE_SEARCH, MAIN_ROUTE } from '../../constants';
 
@@ -43,6 +43,14 @@ const Main = () => {
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
           Star Wars Character Search
         </h1>
+        <p className="text-center">
+          <Link
+            className="text-blue-600 hover:text-blue-800 hover:underline"
+            to="/about"
+          >
+            About me
+          </Link>
+        </p>
         <Search
           initialValue={search}
           onSearch={handleSearch}
