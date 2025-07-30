@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import useGetItem from '../../hooks/useGetItem';
 import Spinner from '../../components/Spinner';
 import { MAIN_ROUTE } from '../../constants';
@@ -7,11 +7,12 @@ const Item = () => {
   const { detailsId: id } = useParams();
 
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   const { data, isLoading, error } = useGetItem({ id: id || '' });
 
   const closePanel = () => {
-    navigate(MAIN_ROUTE);
+    navigate({ pathname: MAIN_ROUTE, search });
   };
 
   return (

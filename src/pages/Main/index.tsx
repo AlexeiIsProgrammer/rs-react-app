@@ -4,7 +4,13 @@ import CardList from '../../components/CardList';
 import Spinner from '../../components/Spinner';
 import Pagination from '../../components/Pagination';
 import useGetItems from '../../hooks/useGetItems';
-import { Link, Outlet, useNavigate, useSearchParams } from 'react-router';
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { LOCAL_STORAGE_SEARCH, MAIN_ROUTE } from '../../constants';
 
@@ -12,6 +18,7 @@ const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [search, setSearch] = useState<string>(value);
   const [limit] = useState<number>(10);
@@ -35,7 +42,8 @@ const Main = () => {
     setSearch(term);
   };
 
-  const onMainPanelClick = () => navigate(MAIN_ROUTE);
+  const onMainPanelClick = () =>
+    navigate({ pathname: MAIN_ROUTE, search: location.search });
 
   return (
     <div className="container mx-auto px-4 py-6">

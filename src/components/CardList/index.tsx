@@ -5,12 +5,12 @@ import type { CardListProps } from './types';
 
 const CardList = ({ characters, isLoading }: CardListProps) => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { search } = useLocation();
 
   const { detailsId: id } = useParams();
 
   const onCardClickHandle = (id: string) =>
-    navigate({ pathname: `${MAIN_ROUTE}/${id}`, search: location.search });
+    navigate({ pathname: `${MAIN_ROUTE}/${id}`, search });
 
   if (isLoading) {
     return (
