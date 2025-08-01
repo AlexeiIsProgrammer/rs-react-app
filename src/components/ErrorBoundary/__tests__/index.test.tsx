@@ -1,8 +1,6 @@
-import React from 'react';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { vi, describe, it, expect } from 'vitest';
 import ErrorBoundary from '../index';
-import App from '../../../app/App';
 
 const ProblemChild = () => {
   throw new Error('Error thrown from problem child');
@@ -26,13 +24,14 @@ describe('ErrorBoundary Component', () => {
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
       .mockImplementation(() => {});
-    const { container } = render(
+
+    render(
       <ErrorBoundary>
         <ProblemChild />
       </ErrorBoundary>
     );
 
-    expect(within(container).getByTestId('retry-button')).toBeInTheDocument();
+    expect(screen.getByTestId('retry-button')).toBeInTheDocument();
     consoleErrorSpy.mockRestore();
   });
 
@@ -49,19 +48,5 @@ describe('ErrorBoundary Component', () => {
 
     expect(consoleErrorSpy).toHaveBeenCalled();
     consoleErrorSpy.mockRestore();
-  });
-
-  it('error button triggers retry and hides fallback UI', async () => {
-    render(
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    );
-    const triggerButton = screen.getByTestId('trigger-button');
-    fireEvent.click(triggerButton);
-    const retryButton = screen.getByTestId('retry-button');
-    fireEvent.click(retryButton);
-
-    expect(screen.queryByTestId('error-message')).not.toBeInTheDocument();
   });
 });

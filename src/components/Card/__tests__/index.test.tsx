@@ -1,42 +1,69 @@
-import { render, within } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import Card from '../index';
-
-const characterMock = {
-  name: 'Luke Skywalker',
-  birth_year: '19BBY',
-  gender: 'male',
-  height: '172',
-  mass: '77',
-};
+import { brokenCharacter, mockCharacter } from '../../../../tests/setup';
 
 describe('Card Component', () => {
+  const ACTIVE_CLASS = 'shadow-lg';
+  const TEST_ID = 'card';
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('displays item name and description correctly', () => {
-    const { container } = render(<Card character={characterMock} />);
-    const card = container.firstChild;
-    if (!card || !(card instanceof HTMLElement)) {
-      throw new Error('Card container not found');
-    }
-    expect(within(card).getByText('Luke Skywalker')).toBeInTheDocument();
-    expect(within(card).getByText(/Born: 19BBY/i)).toBeInTheDocument();
-    expect(within(card).getByText(/Gender: male/i)).toBeInTheDocument();
-    expect(within(card).getByText(/Height: 172cm/i)).toBeInTheDocument();
-    expect(within(card).getByText(/Mass: 77kg/i)).toBeInTheDocument();
+    render(<Card character={mockCharacter} onClick={() => {}} />);
+
+    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+    expect(screen.getByText(/Born: 19BBY/i)).toBeInTheDocument();
+    expect(screen.getByText(/Gender: male/i)).toBeInTheDocument();
+    expect(screen.getByText(/Height: 172cm/i)).toBeInTheDocument();
+    expect(screen.getByText(/Mass: 77kg/i)).toBeInTheDocument();
   });
 
   it('handles missing props gracefully', () => {
-    const incompleteCharacter = {
-      name: '',
-      birth_year: '',
-      gender: '',
-      height: '',
-      mass: '',
-    };
-    const { container } = render(<Card character={incompleteCharacter} />);
-    const card = container.firstChild;
-    if (!card || !(card instanceof HTMLElement)) {
-      throw new Error('Card container not found');
-    }
-    expect(within(card).getAllByText('')[0]).toBeInTheDocument();
+    render(<Card character={brokenCharacter} onClick={() => {}} />);
+
+    expect(screen.getByTestId(TEST_ID)).toBeInTheDocument();
+  });
+
+  it('handle click on Button', () => {
+    const TEST_LOG = 'Call.';
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+
+    render(
+      <Card
+        character={mockCharacter}
+        onClick={() => {
+          console.log(TEST_LOG);
+        }}
+      />
+    );
+
+    const card = screen.getByTestId(TEST_ID);
+
+    expect(card).toBeInTheDocument();
+
+    fireEvent.click(card);
+
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    expect(consoleSpy).toHaveBeenCalledWith(TEST_LOG);
+  });
+
+  it('handle active Card', () => {
+    render(<Card character={mockCharacter} onClick={() => {}} isActive />);
+
+    const card = screen.getByTestId(TEST_ID);
+
+    expect(card).toBeInTheDocument();
+    expect(card).toHaveClass(ACTIVE_CLASS);
+  });
+
+  it('handle not active Card', () => {
+    render(<Card character={mockCharacter} onClick={() => {}} />);
+
+    const card = screen.getByTestId(TEST_ID);
+
+    expect(card).toBeInTheDocument();
+    expect(card).not.toHaveClass(ACTIVE_CLASS);
   });
 });
