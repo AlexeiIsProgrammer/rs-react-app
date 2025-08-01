@@ -1,16 +1,9 @@
-import {
-  createHashRouter,
-  createMemoryRouter,
-  createRoutesStub,
-  redirect,
-  RouterProvider,
-} from 'react-router';
+import { createHashRouter, redirect } from 'react-router';
 import App from '../app/App';
 import Item from '../pages/Item';
 import NotFound from '../pages/NotFound';
 import Main from '../pages/Main';
 import About from '../pages/About';
-import type { JSX } from 'react';
 import { MAIN_ROUTE } from '../constants';
 
 export const routes = [
@@ -46,27 +39,5 @@ export const routes = [
 ];
 
 const router = createHashRouter(routes);
-
-export const Stub = createRoutesStub(routes);
-
-export const StubProvider = ({
-  element,
-  route,
-}: {
-  element: JSX.Element;
-  route?: string;
-}) => {
-  const router = createMemoryRouter(
-    [
-      {
-        path: route || '/',
-        element,
-      },
-    ],
-    { initialEntries: ['/'] }
-  );
-
-  return <RouterProvider router={router} />;
-};
 
 export default router;

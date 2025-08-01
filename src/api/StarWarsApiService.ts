@@ -5,8 +5,8 @@ import type {
   Result,
 } from '../types/interfaces';
 
-class ApiService {
-  private static readonly baseUrl: string = 'https://www.swapi.tech/api';
+class StarWarsApiService {
+  private static readonly baseUrl: string = 'https://www.swapi.tech/';
   private static readonly defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -18,14 +18,18 @@ class ApiService {
     searchTerm: string
   ): Promise<GetItemsResponse> {
     try {
-      const queryParams = new URLSearchParams({
+      const url = new URL('api/people', this.baseUrl);
+
+      const searchParams = new URLSearchParams({
         name: searchTerm,
         page: page.toString(),
         limit: limit.toString(),
         expanded: 'true',
       });
 
-      const response = await fetch(`${this.baseUrl}/people?${queryParams}`, {
+      url.search = searchParams.toString();
+
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           ...this.defaultHeaders,
@@ -77,4 +81,4 @@ class ApiService {
   }
 }
 
-export default ApiService;
+export default StarWarsApiService;

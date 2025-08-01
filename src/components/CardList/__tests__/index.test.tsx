@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import CardList from '../index';
 import type { Character } from '../../../types/interfaces';
-import { StubProvider } from '../../../router';
+import { StubProvider } from '../../../router/utils';
 
 const charactersMock: Character[] = [
   {

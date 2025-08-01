@@ -34,7 +34,7 @@ const Main = () => {
   });
 
   const onPageChange = (currentPage: number) => {
-    setSearchParams(`page=${currentPage}`);
+    setSearchParams({ page: currentPage.toString() });
   };
 
   const handleSearch = (term: string): void => {

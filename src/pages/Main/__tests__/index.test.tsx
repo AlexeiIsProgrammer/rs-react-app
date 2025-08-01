@@ -1,9 +1,10 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { mockCharacter } from '../../../../tests/setup';
-import { routes, Stub } from '../../../router';
+import { routes } from '../../../router';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { MAIN_ROUTE } from '../../../constants';
+import { Stub } from '../../../router/utils';
 
 const SEARCHED_TEXT = 'Luke Skywalker';
 const SEARCHED_TERM = 'Luke';
@@ -115,6 +116,7 @@ describe('Main Component', () => {
       expect(localStorage.getItem('swapiSearch')).toBe(SEARCHED_TERM);
     });
   });
+
   it('handle pagination page change', async () => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,

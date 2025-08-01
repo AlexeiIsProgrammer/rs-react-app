@@ -6,6 +6,7 @@ import react from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import reactCompiler from 'eslint-plugin-react-compiler';
+import jestFormatting from 'eslint-plugin-jest-formatting';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -15,7 +16,13 @@ export default tseslint.config(
       ...tseslint.configs.strict,
       eslintPluginPrettier,
     ],
-    files: ['**/*.{ts,tsx}'],
+    files: [
+      '**/*.{ts,tsx}',
+      '**/*.test.{js,jsx,ts,tsx}',
+      '**/*.spec.{js,jsx,ts,tsx}',
+      '**/__tests__/**/*.{js,jsx,ts,tsx}',
+      '**/__tests__/*.test.{js,jsx,ts,tsx}',
+    ],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -25,9 +32,11 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'react-compiler': reactCompiler,
+      'jest-formatting': jestFormatting
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      "jest-formatting/padding-around-test-blocks": "error",
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },

@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { Stub } from '../../router';
+import { Stub } from '../../router/utils';
 
 describe('App Component', () => {
   it('renders App', async () => {
