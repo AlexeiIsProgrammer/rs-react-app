@@ -45,6 +45,39 @@ const Main = () => {
   const onMainPanelClick = () =>
     navigate({ pathname: MAIN_ROUTE, search: location.search });
 
+  const content = (() => {
+    switch (true) {
+      case Boolean(error):
+        return (
+          <div
+            className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
+            data-testid="error-message"
+          >
+            Error: {error}
+          </div>
+        );
+
+      case Boolean(data):
+      case isLoading:
+        return (
+          <>
+            {isLoading && <Spinner />}
+            {data && (
+              <>
+                <CardList characters={data.data} isLoading={isLoading} />
+                <Pagination
+                  itemsPerPage={limit}
+                  totalItems={data.total}
+                  currentPage={page}
+                  onPageChange={onPageChange}
+                />
+              </>
+            )}
+          </>
+        );
+    }
+  })();
+
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="mb-8">
@@ -72,29 +105,7 @@ const Main = () => {
             {search ? `Results for "${search}"` : 'All Characters'}
           </h2>
 
-          {error ? (
-            <div
-              className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
-              data-testid="error-message"
-            >
-              Error: {error}
-            </div>
-          ) : (
-            <>
-              {isLoading && <Spinner />}
-              {data && (
-                <>
-                  <CardList characters={data.data} isLoading={isLoading} />
-                  <Pagination
-                    itemsPerPage={limit}
-                    totalItems={data.total}
-                    currentPage={page}
-                    onPageChange={onPageChange}
-                  />
-                </>
-              )}
-            </>
-          )}
+          {content}
         </div>
 
         <Outlet />
