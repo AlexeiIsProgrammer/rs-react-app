@@ -59,8 +59,10 @@ class StarWarsApiService {
     }
   }
   static async getItem(id: string): Promise<Character> {
+    const url = new URL(`api/people/${id}`, this.baseUrl);
+
     try {
-      const response = await fetch(`${this.baseUrl}/people/${id}`, {
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           ...this.defaultHeaders,

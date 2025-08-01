@@ -1,5 +1,7 @@
 import { Link } from 'react-router';
 
+import notFound from '../../assets/not-found.svg';
+
 const NotFound = () => {
   return (
     <div className="text-center max-w-lg mx-auto overflow-hidden p-8 md:p-12">
@@ -14,21 +16,8 @@ const NotFound = () => {
         moved.
       </p>
 
-      <div className="mb-8">
-        <svg
-          className="w-48 h-48 mx-auto text-indigo-300"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1}
-            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
+      <div className="mb-8 w-48 h-48 mx-auto text-indigo-300">
+        <img src={notFound} />
       </div>
 
       <Link

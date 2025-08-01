@@ -3,6 +3,8 @@ import useGetItem from '../../hooks/useGetItem';
 import Spinner from '../../components/Spinner';
 import { MAIN_ROUTE } from '../../constants';
 
+import close from '../../assets/close.svg';
+
 const Item = () => {
   const { detailsId: id } = useParams();
 
@@ -21,22 +23,10 @@ const Item = () => {
         <button
           title="close"
           onClick={closePanel}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 w-[25px] h-[25px]"
           aria-label="Close panel"
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <img src={close} />
         </button>
 
         <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">

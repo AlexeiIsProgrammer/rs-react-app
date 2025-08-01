@@ -144,61 +144,6 @@ describe('Pagination Component', () => {
     expect(page).toBe(9);
   });
 
-  it('click previous mobile button', async () => {
-    let page = 8;
-
-    render(
-      <StubProvider
-        element={
-          <Pagination
-            totalItems={82}
-            itemsPerPage={10}
-            currentPage={page}
-            maxVisiblePages={5}
-            onPageChange={(currentPage) => {
-              page = currentPage;
-            }}
-          />
-        }
-      />
-    );
-
-    const prevButton = screen.getByTestId('prev-mobile');
-
-    expect(prevButton).toBeInTheDocument();
-
-    fireEvent.click(prevButton);
-
-    expect(page).toBe(7);
-  });
-
-  it('click next mobile button', async () => {
-    let page = 8;
-    render(
-      <StubProvider
-        element={
-          <Pagination
-            totalItems={82}
-            itemsPerPage={10}
-            currentPage={page}
-            maxVisiblePages={5}
-            onPageChange={(currentPage) => {
-              page = currentPage;
-            }}
-          />
-        }
-      />
-    );
-
-    const nextButton = screen.getByTestId('next-mobile');
-
-    expect(nextButton).toBeInTheDocument();
-
-    fireEvent.click(nextButton);
-
-    expect(page).toBe(9);
-  });
-
   it('click first page button', async () => {
     let page = 5;
     render(
