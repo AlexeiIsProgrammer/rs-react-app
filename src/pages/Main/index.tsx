@@ -48,6 +48,7 @@ const Main = () => {
     page,
     expanded: true,
   });
+  console.log('error', error);
 
   const isLoading = isGetItemsLoading || isGetItemsFetching;
 
@@ -73,7 +74,7 @@ const Main = () => {
       case isError:
         return (
           <div className={styles.errorMessage} data-testid="error-message">
-            Error: {error.toString()}
+            {'error' in error ? error.error : 'Unknown error'}
           </div>
         );
       case Boolean(data):

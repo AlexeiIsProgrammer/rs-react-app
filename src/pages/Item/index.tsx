@@ -34,7 +34,7 @@ const Item = () => {
       case isError:
         return (
           <div data-testid="error-message" className={styles.errorMessage}>
-            {error.toString()}
+            {'error' in error ? error.error : 'Unknown error'}
           </div>
         );
       case !!data:
