@@ -1,16 +1,27 @@
 import type { CardProps } from './types';
 
-const Card = ({ character, onClick, isActive }: CardProps) => (
+const Card = ({
+  character,
+  onClick,
+  checked,
+  onCheckboxChange,
+  isActive,
+}: CardProps) => (
   <div
-    onClick={(e) => {
-      e.stopPropagation();
-
-      onClick(character.id);
-    }}
+    onClick={onClick(character.id)}
     data-testid="card"
     className={`p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow ${isActive ? 'shadow-lg' : ''}`}
   >
-    <h3 className="text-lg font-semibold text-gray-800">{character.name}</h3>
+    <div className="flex justify-between">
+      <h3 className="text-lg font-semibold text-gray-800">{character.name}</h3>
+
+      <input
+        key={checked.toString()}
+        type="checkbox"
+        checked={checked}
+        onClick={onCheckboxChange(character, !checked)}
+      />
+    </div>
     <p className="text-gray-600">
       Born: {character.birth_year} | Gender: {character.gender}
     </p>

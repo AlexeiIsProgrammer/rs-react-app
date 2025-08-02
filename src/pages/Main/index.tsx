@@ -13,12 +13,23 @@ import {
 } from 'react-router';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { LOCAL_STORAGE_SEARCH, MAIN_ROUTE } from '../../constants';
+import { useAppDispatch, useAppSelector } from '../../store';
+import {
+  areSelectedItemsCountSelector,
+  selectedItemsSelector,
+  unselectAllItems,
+} from '../../store/slices/selectedItemsSlice';
+import downloadCSV from '../../utils/saveToCsv';
 
 const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const dispatch = useAppDispatch();
+  const selectedItems = useAppSelector(selectedItemsSelector);
+  const areSelectedItemsCount = useAppSelector(areSelectedItemsCountSelector);
 
   const [search, setSearch] = useState<string>(value);
   const [limit] = useState<number>(10);
@@ -44,6 +55,10 @@ const Main = () => {
 
   const onMainPanelClick = () =>
     navigate({ pathname: MAIN_ROUTE, search: location.search });
+
+  const downloadItemsHandle = () => downloadCSV(selectedItems);
+
+  const unselectAllHandle = () => dispatch(unselectAllItems());
 
   const content = (() => {
     switch (true) {
@@ -101,7 +116,7 @@ const Main = () => {
 
       <div className="flex flex-col lg:flex-row gap-8">
         <div onClick={onMainPanelClick} className="flex-1">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+          <h2 className="text-2xl font-semibold text-gray-700 mr-auto">
             {search ? `Results for "${search}"` : 'All Characters'}
           </h2>
 
@@ -110,6 +125,28 @@ const Main = () => {
 
         <Outlet />
       </div>
+
+      {areSelectedItemsCount !== 0 && (
+        <div className="fixed flex gap-5 bottom-0 p-5 left-[50%] -translate-x-[50%]">
+          <h4>
+            <b>{areSelectedItemsCount} items are selected</b>
+          </h4>
+
+          <button
+            onClick={unselectAllHandle}
+            className="px-4 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+          >
+            Unselect all
+          </button>
+
+          <button
+            onClick={downloadItemsHandle}
+            className="px-4 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+          >
+            Download
+          </button>
+        </div>
+      )}
     </div>
   );
 };

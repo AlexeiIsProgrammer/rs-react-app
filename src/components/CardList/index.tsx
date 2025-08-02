@@ -2,15 +2,57 @@ import Card from '../Card';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import { MAIN_ROUTE } from '../../constants';
 import type { CardListProps } from './types';
+import { useCallback, useMemo, type MouseEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store';
+import {
+  selectedItemsSelector,
+  selectItem,
+  unselectItem,
+} from '../../store/slices/selectedItemsSlice';
+import type { Character } from '../../types/interfaces';
 
 const CardList = ({ characters, isLoading }: CardListProps) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { search } = useLocation();
 
+  const selectedItems = useAppSelector(selectedItemsSelector);
+
   const { detailsId: id } = useParams();
 
-  const onCardClickHandle = (id: string) =>
+  const onCardClickHandle = (id: string) => (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+
     navigate({ pathname: `${MAIN_ROUTE}/${id}`, search });
+  };
+
+  const onCheckboxChange =
+    (item: Character, checked: boolean) =>
+    (e: MouseEvent<HTMLInputElement>) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      if (checked) {
+        dispatch(selectItem(item));
+      } else {
+        dispatch(unselectItem(item));
+      }
+    };
+
+  const checked = useCallback(
+    (id: string) =>
+      selectedItems.some((selectedItem) => selectedItem.id === id),
+    [selectedItems]
+  );
+
+  const sortedItems = useMemo(
+    () =>
+      [...characters].sort(
+        (a, b) => Number(checked(b.id)) - Number(checked(a.id))
+      ),
+    [characters, checked]
+  );
 
   if (isLoading) {
     return (
@@ -42,11 +84,13 @@ const CardList = ({ characters, isLoading }: CardListProps) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {characters.map((character, index) => (
+      {sortedItems.map((character) => (
         <Card
-          key={index}
+          key={character.id}
+          checked={checked(character.id)}
           character={character}
           onClick={onCardClickHandle}
+          onCheckboxChange={onCheckboxChange}
           isActive={character.id === id}
         />
       ))}
