@@ -6,11 +6,12 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { routes, StubProvider } from '../../../router';
+import { routes } from '../../../router';
 import { mockCharacter } from '../../../../tests/setup';
 import Item from '..';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { MAIN_ROUTE } from '../../../constants';
+import { StubProvider } from '../../../router/utils';
 
 describe('Item page', () => {
   const responseMock = { result: { properties: mockCharacter, uid: '1' } };
@@ -25,6 +26,7 @@ describe('Item page', () => {
 
     expect(screen.getByText('Character Details')).toBeInTheDocument();
   });
+
   it('makes initial API call on component mount', async () => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,

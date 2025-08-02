@@ -1,5 +1,5 @@
 {
-  "homepage": "https://alexeiisprogrammer.github.io/rs-react-app/",
+  "homepage": "https://alexeiisprogrammer.github.io/rs-react-app",
   "name": "rs-react-app",
   "private": true,
   "version": "0.0.0",
@@ -35,6 +35,7 @@
     "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.30.1",
     "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-jest-formatting": "^3.1.0",
     "eslint-plugin-prettier": "^5.5.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",

@@ -1,11 +1,6 @@
 import React, { useState, type FormEvent } from 'react';
 import { INPUT_PLACEHOLDER } from '../../constants';
-
-interface SearchProps {
-  initialValue: string;
-  onSearch: (term: string) => void;
-  loading: boolean;
-}
+import type { SearchProps } from './types';
 
 function Search({ initialValue, onSearch, loading }: SearchProps) {
   const [inputValue, setInputValue] = useState(initialValue);

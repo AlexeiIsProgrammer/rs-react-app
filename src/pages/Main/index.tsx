@@ -4,7 +4,13 @@ import CardList from '../../components/CardList';
 import Spinner from '../../components/Spinner';
 import Pagination from '../../components/Pagination';
 import useGetItems from '../../hooks/useGetItems';
-import { Outlet, useNavigate, useSearchParams } from 'react-router';
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { LOCAL_STORAGE_SEARCH, MAIN_ROUTE } from '../../constants';
 
@@ -12,6 +18,7 @@ const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [search, setSearch] = useState<string>(value);
   const [limit] = useState<number>(10);
@@ -27,7 +34,7 @@ const Main = () => {
   });
 
   const onPageChange = (currentPage: number) => {
-    setSearchParams(`page=${currentPage}`);
+    setSearchParams({ page: currentPage.toString() });
   };
 
   const handleSearch = (term: string): void => {
@@ -35,7 +42,41 @@ const Main = () => {
     setSearch(term);
   };
 
-  const onMainPanelClick = () => navigate(MAIN_ROUTE);
+  const onMainPanelClick = () =>
+    navigate({ pathname: MAIN_ROUTE, search: location.search });
+
+  const content = (() => {
+    switch (true) {
+      case Boolean(error):
+        return (
+          <div
+            className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
+            data-testid="error-message"
+          >
+            Error: {error}
+          </div>
+        );
+
+      case Boolean(data):
+      case isLoading:
+        return (
+          <>
+            {isLoading && <Spinner />}
+            {data && (
+              <>
+                <CardList characters={data.data} isLoading={isLoading} />
+                <Pagination
+                  itemsPerPage={limit}
+                  totalItems={data.total}
+                  currentPage={page}
+                  onPageChange={onPageChange}
+                />
+              </>
+            )}
+          </>
+        );
+    }
+  })();
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -43,6 +84,14 @@ const Main = () => {
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
           Star Wars Character Search
         </h1>
+        <p className="text-center">
+          <Link
+            className="text-blue-600 hover:text-blue-800 hover:underline"
+            to="/about"
+          >
+            About me
+          </Link>
+        </p>
         <Search
           initialValue={search}
           onSearch={handleSearch}
@@ -56,29 +105,7 @@ const Main = () => {
             {search ? `Results for "${search}"` : 'All Characters'}
           </h2>
 
-          {error ? (
-            <div
-              className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
-              data-testid="error-message"
-            >
-              Error: {error}
-            </div>
-          ) : (
-            <>
-              {isLoading && <Spinner />}
-              {data && (
-                <>
-                  <CardList characters={data.data} isLoading={isLoading} />
-                  <Pagination
-                    itemsPerPage={limit}
-                    totalItems={data.total}
-                    currentPage={page}
-                    onPageChange={onPageChange}
-                  />
-                </>
-              )}
-            </>
-          )}
+          {content}
         </div>
 
         <Outlet />

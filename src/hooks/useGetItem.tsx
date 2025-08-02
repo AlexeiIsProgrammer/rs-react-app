@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Character } from '../types/interfaces';
-import ApiService from '../api/ApiService';
+import StarWarsApiService from '../api/StarWarsApiService';
 
 type useGetItemProps = {
   id: string;
@@ -16,7 +16,7 @@ const useGetItem = ({ id }: useGetItemProps) => {
       setIsLoading(true);
       setError('');
 
-      ApiService.getItem(id)
+      StarWarsApiService.getItem(id)
         .then((data: Character) => {
           setData(data);
         })

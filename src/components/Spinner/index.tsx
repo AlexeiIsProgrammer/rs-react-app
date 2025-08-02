@@ -1,6 +1,4 @@
-import React from 'react';
-
-const Spinner: React.FC = () => (
+const Spinner = () => (
   <div
     className="flex justify-center py-8"
     role="status"

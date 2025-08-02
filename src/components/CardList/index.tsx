@@ -1,19 +1,16 @@
 import Card from '../Card';
-import type { Character } from '../../types/interfaces';
-import { useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import { MAIN_ROUTE } from '../../constants';
-
-interface CardListProps {
-  characters: Character[];
-  isLoading: boolean;
-}
+import type { CardListProps } from './types';
 
 const CardList = ({ characters, isLoading }: CardListProps) => {
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   const { detailsId: id } = useParams();
 
-  const onCardClickHandle = (id: string) => navigate(`${MAIN_ROUTE}/${id}`);
+  const onCardClickHandle = (id: string) =>
+    navigate({ pathname: `${MAIN_ROUTE}/${id}`, search });
 
   if (isLoading) {
     return (

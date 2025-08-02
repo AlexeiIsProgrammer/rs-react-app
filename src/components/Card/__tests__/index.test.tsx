@@ -9,6 +9,7 @@ describe('Card Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
+
   it('displays item name and description correctly', () => {
     render(<Card character={mockCharacter} onClick={() => {}} />);
 
@@ -56,6 +57,7 @@ describe('Card Component', () => {
     expect(card).toBeInTheDocument();
     expect(card).toHaveClass(ACTIVE_CLASS);
   });
+
   it('handle not active Card', () => {
     render(<Card character={mockCharacter} onClick={() => {}} />);
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { GetItemsResponse } from '../types/interfaces';
-import ApiService from '../api/ApiService';
+import StarWarsApiService from '../api/StarWarsApiService';
 
 type useGetItemsProps = {
   search: string;
@@ -18,7 +18,7 @@ const useGetItems = ({ search, page, limit }: useGetItemsProps) => {
       setIsLoading(true);
       setError('');
 
-      ApiService.getItems(page, limit, searchTerm)
+      StarWarsApiService.getItems(page, limit, searchTerm)
         .then((data: GetItemsResponse) => {
           setData(data);
         })
