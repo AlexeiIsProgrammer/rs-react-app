@@ -13,14 +13,12 @@
 .title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #1f2937;
   margin-bottom: 0.5rem;
 }
 
 .aboutLink {
-  color: #2563eb;
+  color: var(--accent-color);
   &:hover {
-    color: #1e40af;
     text-decoration: underline;
   }
 }
@@ -43,7 +41,6 @@
 .panelTitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #374151;
   margin-right: auto;
 }
 
@@ -65,7 +62,7 @@
   padding: 1.25rem;
   left: 50%;
   transform: translateX(-50%);
-  background-color: white;
+  background-color: var(--bg-color);
   border-radius: 0.5rem 0.5rem 0 0;
   box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
 
@@ -77,14 +74,14 @@
 .button {
   white-space: nowrap;
   padding: 0.5rem 1rem;
-  background-color: #3b82f6;
+  background-color: var(--accent-color);
   color: white;
   border-radius: 0.25rem;
   border: none;
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    background-color: #2563eb;
+    background-color: var(--accent-color);
   }
 
   &:disabled {

@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import selectedItemsReducer from './slices/selectedItemsSlice';
 import {
@@ -7,14 +7,21 @@ import {
   type TypedUseSelectorHook,
 } from 'react-redux';
 
-export const store = configureStore({
-  reducer: {
-    selectedItems: selectedItemsReducer,
-  },
+const rootReducer = combineReducers({
+  selectedItems: selectedItemsReducer,
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export const setupStore = (preloadedState?: Partial<RootState>) => {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  });
+};
+
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof setupStore>;
+
+export type AppDispatch = AppStore['dispatch'];
 
 type DispatchFunc = () => AppDispatch;
 export const useAppDispatch: DispatchFunc = useDispatch;

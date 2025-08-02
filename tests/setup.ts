@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
 export const mockCharacter = {
   name: 'Luke Skywalker',
@@ -23,3 +24,19 @@ export const setViewport = (width: number, height: number = 720) => {
   window.innerHeight = height;
   window.dispatchEvent(new Event('resize'));
 };
+
+global.URL.createObjectURL = vi.fn(() => 'mock-url');
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: (query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  }),
+});

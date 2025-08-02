@@ -21,6 +21,7 @@ import {
 } from '../../store/slices/selectedItemsSlice';
 import getCSVHref from '../../utils/getCSVHref';
 import styles from './Main.module.scss';
+import ThemeButton from '../../components/ThemeButton';
 
 const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
@@ -81,6 +82,8 @@ const Main = () => {
           <Link to="/about" className={styles.aboutLink}>
             About me
           </Link>
+
+          <ThemeButton />
         </p>
         <Search
           initialValue={search}

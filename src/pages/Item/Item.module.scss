@@ -1,9 +1,9 @@
 .container {
+  flex-shrink: 0;
+  position: relative;
   @media (min-width: 1024px) {
     width: 33.333333%;
   }
-  flex-shrink: 0;
-  position: relative;
 }
 
 .panel {
@@ -32,7 +32,6 @@
 .title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
   margin-bottom: 1rem;
   border-bottom: 1px solid #e5e7eb;
   padding-bottom: 0.5rem;

@@ -1,10 +1,11 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { Stub } from '../../router/utils';
+import { renderWithProviders } from '../../store/util';
 
 describe('App Component', () => {
   it('renders App', async () => {
-    render(<Stub initialEntries={['/']} />);
+    renderWithProviders(<Stub initialEntries={['/']} />);
 
     await waitFor(() => {
       expect(

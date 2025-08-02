@@ -30,14 +30,14 @@
 
 .searchButton {
   padding: 0.5rem 1rem;
-  background-color: #3b82f6;
+  background-color: var(--accent-color);
   color: white;
   border-radius: 0.25rem;
   border: none;
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    background-color: #2563eb;
+    background-color: var(--accent-color);
   }
 
   &:disabled {
