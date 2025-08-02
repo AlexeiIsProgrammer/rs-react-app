@@ -1,6 +1,7 @@
 import React, { useState, type FormEvent } from 'react';
 import { INPUT_PLACEHOLDER } from '../../constants';
 import type { SearchProps } from './types';
+import styles from './Search.module.scss';
 
 function Search({ initialValue, onSearch, loading }: SearchProps) {
   const [inputValue, setInputValue] = useState(initialValue);
@@ -11,26 +12,25 @@ function Search({ initialValue, onSearch, loading }: SearchProps) {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-
     const processedTerm = inputValue.trim();
     onSearch(processedTerm);
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-4 bg-white rounded-lg shadow">
-      <form role="form" className="flex gap-2" onSubmit={handleSubmit}>
+    <div className={styles.searchContainer}>
+      <form role="form" className={styles.searchForm} onSubmit={handleSubmit}>
         <input
           type="text"
           value={inputValue}
           onChange={handleChange}
           placeholder={INPUT_PLACEHOLDER}
-          className="flex-1 p-2 border border-gray-300 rounded"
+          className={styles.searchInput}
           disabled={loading}
           data-testid="search-input"
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+          className={styles.searchButton}
           disabled={loading}
           data-testid="search-button"
         >

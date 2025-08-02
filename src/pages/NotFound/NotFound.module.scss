@@ -1,0 +1,59 @@
+.container {
+  text-align: center;
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem;
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    padding: 3rem;
+  }
+}
+
+.errorCode {
+  font-size: 6rem;
+  font-weight: 700;
+  color: #4f46e5;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    font-size: 2.5rem;
+  }
+}
+
+.description {
+  font-size: 1.125rem;
+  color: #4b5563;
+  margin-bottom: 2rem;
+}
+
+.imageContainer {
+  width: 12rem;
+  height: 12rem;
+  margin-left: auto;
+  margin-right: auto;
+  color: #a5b4fc;
+  margin-bottom: 2rem;
+}
+
+.homeLink {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #4f46e5;
+  color: white;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #4338ca;
+  }
+}

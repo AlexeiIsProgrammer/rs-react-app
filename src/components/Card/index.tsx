@@ -1,4 +1,6 @@
 import type { CardProps } from './types';
+import styles from './Card.module.scss';
+import clsx from 'clsx';
 
 const Card = ({
   character,
@@ -10,22 +12,25 @@ const Card = ({
   <div
     onClick={onClick(character.id)}
     data-testid="card"
-    className={`p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow ${isActive ? 'shadow-lg' : ''}`}
+    className={clsx(styles.card, {
+      [styles.active]: isActive,
+    })}
   >
-    <div className="flex justify-between">
-      <h3 className="text-lg font-semibold text-gray-800">{character.name}</h3>
+    <div className={styles.header}>
+      <h3 className={styles.title}>{character.name}</h3>
 
       <input
         key={checked.toString()}
         type="checkbox"
+        onChange={() => {}}
         checked={checked}
         onClick={onCheckboxChange(character, !checked)}
       />
     </div>
-    <p className="text-gray-600">
+    <p className={styles.birth}>
       Born: {character.birth_year} | Gender: {character.gender}
     </p>
-    <p className="text-sm text-gray-500 mt-1">
+    <p className={styles.info}>
       Height: {character.height}cm, Mass: {character.mass}kg
     </p>
   </div>
