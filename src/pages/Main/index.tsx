@@ -19,7 +19,7 @@ import {
   selectedItemsSelector,
   unselectAllItems,
 } from '../../store/slices/selectedItemsSlice';
-import downloadCSV from '../../utils/saveToCsv';
+import getCSVHref from '../../utils/getCSVHref';
 
 const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
@@ -56,7 +56,8 @@ const Main = () => {
   const onMainPanelClick = () =>
     navigate({ pathname: MAIN_ROUTE, search: location.search });
 
-  const downloadItemsHandle = () => downloadCSV(selectedItems);
+  const href = useMemo(() => getCSVHref(selectedItems), [selectedItems]);
+  const download = `${areSelectedItemsCount}_items.csv`;
 
   const unselectAllHandle = () => dispatch(unselectAllItems());
 
@@ -139,12 +140,13 @@ const Main = () => {
             Unselect all
           </button>
 
-          <button
-            onClick={downloadItemsHandle}
+          <a
+            href={href}
+            download={download}
             className="px-4 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
           >
             Download
-          </button>
+          </a>
         </div>
       )}
     </div>

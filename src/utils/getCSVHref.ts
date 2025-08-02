@@ -1,20 +1,17 @@
 import type { Character } from '../types/interfaces';
 
-const downloadCSV = (items: Character[]) => {
+const getCSVHref = (items: Character[]) => {
   const csvData = jsonToCSV(items);
 
   const blob = new Blob([csvData], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.setAttribute('hidden', '');
-  a.setAttribute('href', url);
-  a.setAttribute('download', `${items.length}_items.csv`);
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+
+  return url;
 };
 
 function jsonToCSV(items: Character[]) {
+  if (items.length === 0) return '';
+
   const header = Object.keys(items[0]) as Array<keyof Character>;
 
   let csv = header.join(',') + '\n';
@@ -30,4 +27,4 @@ function jsonToCSV(items: Character[]) {
   return csv;
 }
 
-export default downloadCSV;
+export default getCSVHref;
