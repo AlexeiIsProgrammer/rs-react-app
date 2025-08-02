@@ -96,7 +96,7 @@ const Pagination = ({
             <span className={styles.ellipsis}>...</span>
           )}
 
-        {currentPage <= totalPages - Math.floor(maxVisiblePages / 2) &&
+        {currentPage < totalPages - Math.floor(maxVisiblePages / 2) &&
           totalPages > maxVisiblePages && (
             <button
               onClick={onClickButtonHandle(() => handlePageChange(totalPages))}

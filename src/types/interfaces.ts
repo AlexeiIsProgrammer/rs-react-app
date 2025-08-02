@@ -11,7 +11,11 @@ export interface Result {
   properties: Character;
   uid: string;
 }
-export interface ApiResponse {
+
+export type StarWarsGetItemResponse = {
+  result: Result;
+};
+export interface StarWarsGetItemsResponse {
   results?: Result[];
   result?: Result[];
   total_pages: number;
@@ -25,3 +29,5 @@ export type GetItemsResponse = {
   limit: number;
   totalPages: number;
 };
+
+export type GetItemResponse = Character;

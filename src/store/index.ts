@@ -6,15 +6,19 @@ import {
   useSelector,
   type TypedUseSelectorHook,
 } from 'react-redux';
+import { starWarsApi } from './api';
 
 const rootReducer = combineReducers({
   selectedItems: selectedItemsReducer,
+  [starWarsApi.reducerPath]: starWarsApi.reducer,
 });
 
 export const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     preloadedState,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(starWarsApi.middleware),
   });
 };
 

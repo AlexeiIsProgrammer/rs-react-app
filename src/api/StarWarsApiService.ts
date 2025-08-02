@@ -1,8 +1,8 @@
 import type {
-  ApiResponse,
   Character,
   GetItemsResponse,
-  Result,
+  StarWarsGetItemResponse,
+  StarWarsGetItemsResponse,
 } from '../types/interfaces';
 
 class StarWarsApiService {
@@ -40,7 +40,7 @@ class StarWarsApiService {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data: ApiResponse = await response.json();
+      const data: StarWarsGetItemsResponse = await response.json();
 
       return {
         data:
@@ -73,9 +73,9 @@ class StarWarsApiService {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data: Result = (await response.json()).result;
+      const data: StarWarsGetItemResponse = await response.json();
 
-      return { ...data?.properties, id: data?.uid };
+      return { ...data?.result.properties, id: data?.result.uid };
     } catch (error) {
       console.error('Error fetching items:', error);
       throw error;

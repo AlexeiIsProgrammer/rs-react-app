@@ -3,7 +3,6 @@ import Search from '../../components/Search';
 import CardList from '../../components/CardList';
 import Spinner from '../../components/Spinner';
 import Pagination from '../../components/Pagination';
-import useGetItems from '../../hooks/useGetItems';
 import {
   Link,
   Outlet,
@@ -22,6 +21,7 @@ import {
 import getCSVHref from '../../utils/getCSVHref';
 import styles from './Main.module.scss';
 import ThemeButton from '../../components/ThemeButton';
+import { useGetItemsQuery } from '../../store/api';
 
 const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
@@ -36,7 +36,20 @@ const Main = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = useMemo(() => +(searchParams.get('page') || 1), [searchParams]);
 
-  const { data, isLoading, error } = useGetItems({ search, limit, page });
+  const {
+    data,
+    isLoading: isGetItemsLoading,
+    error,
+    isError,
+    isFetching: isGetItemsFetching,
+  } = useGetItemsQuery({
+    name: search,
+    limit,
+    page,
+    expanded: true,
+  });
+
+  const isLoading = isGetItemsLoading || isGetItemsFetching;
 
   const onPageChange = (currentPage: number) => {
     setSearchParams({ page: currentPage.toString() });
@@ -57,10 +70,10 @@ const Main = () => {
 
   const content = (() => {
     switch (true) {
-      case Boolean(error):
+      case isError:
         return (
           <div className={styles.errorMessage} data-testid="error-message">
-            Error: {error}
+            Error: {error.toString()}
           </div>
         );
       case Boolean(data):
