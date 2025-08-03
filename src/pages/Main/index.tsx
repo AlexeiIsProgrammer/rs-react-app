@@ -48,7 +48,6 @@ const Main = () => {
     page,
     expanded: true,
   });
-  console.log('error', error);
 
   const isLoading = isGetItemsLoading || isGetItemsFetching;
 

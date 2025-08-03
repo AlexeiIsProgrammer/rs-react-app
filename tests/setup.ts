@@ -1,5 +1,7 @@
 import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import { afterAll, beforeAll, vi } from 'vitest';
+import { server } from '../src/mocks/server';
+import { afterEach } from 'node:test';
 
 export const mockCharacter = {
   name: 'Luke Skywalker',
@@ -40,3 +42,7 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: vi.fn(),
   }),
 });
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());

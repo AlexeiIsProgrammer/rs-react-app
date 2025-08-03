@@ -6,16 +6,15 @@ import {
 } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { routes } from '../../../router';
-import { mockCharacter } from '../../../../tests/setup';
 import Item from '..';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { MAIN_ROUTE } from '../../../constants';
 import { StubProvider } from '../../../router/utils';
 import { renderWithProviders } from '../../../store/util';
+import { http, HttpResponse } from 'msw';
+import { server } from '../../../mocks/server';
 
 describe('Item page', () => {
-  const responseMock = { result: { properties: mockCharacter, uid: '1' } };
-
   beforeEach(() => {
     vi.resetAllMocks();
     localStorage.clear();
@@ -28,12 +27,13 @@ describe('Item page', () => {
   });
 
   it('makes initial API call on component mount', async () => {
-    vi.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: async () => responseMock,
-    } as Response);
-
-    renderWithProviders(<StubProvider element={<Item />} />);
+    renderWithProviders(
+      <StubProvider
+        element={<Item />}
+        route={`${MAIN_ROUTE}/:detailsId`}
+        initialEntries={[`${MAIN_ROUTE}/1`]}
+      />
+    );
 
     await waitFor(() => {
       expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
@@ -41,16 +41,11 @@ describe('Item page', () => {
   });
 
   it('manages loading states during API calls', async () => {
-    vi.spyOn(global, 'fetch').mockImplementation(
-      () =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            resolve({
-              ok: true,
-              json: async () => responseMock,
-            } as Response);
-          }, 100);
-        })
+    server.use(
+      http.get('https://www.swapi.tech/api/people/:id', async () => {
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        return HttpResponse.json({});
+      })
     );
 
     renderWithProviders(<StubProvider element={<Item />} />);
@@ -63,11 +58,11 @@ describe('Item page', () => {
   });
 
   it('handles API error responses', async () => {
-    vi.spyOn(global, 'fetch').mockResolvedValue({
-      ok: false,
-      status: 500,
-      json: async () => ({}),
-    } as Response);
+    server.use(
+      http.get('https://www.swapi.tech/api/people/:id', () => {
+        return HttpResponse.json(null, { status: 404 });
+      })
+    );
 
     renderWithProviders(<StubProvider element={<Item />} />);
 
