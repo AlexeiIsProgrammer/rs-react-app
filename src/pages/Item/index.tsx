@@ -3,25 +3,31 @@ import Spinner from '../../components/Spinner';
 import { MAIN_ROUTE } from '../../constants';
 import close from '../../assets/close.svg';
 import styles from './Item.module.scss';
-import { useGetItemQuery } from '../../store/api';
+import { useGetItemQuery, useLazyGetItemQuery } from '../../store/api';
 
 const Item = () => {
-  const { detailsId: id } = useParams();
+  const { detailsId } = useParams();
   const navigate = useNavigate();
   const { search } = useLocation();
+
+  const id = detailsId || '';
+
+  const [getItem] = useLazyGetItemQuery();
   const {
     data,
     isLoading: isGetItemLoading,
     error,
     isError,
     isFetching: isGetItemFetching,
-  } = useGetItemQuery({ id: id || '' });
+  } = useGetItemQuery({ id });
 
   const isLoading = isGetItemLoading || isGetItemFetching;
 
   const closePanel = () => {
     navigate({ pathname: MAIN_ROUTE, search });
   };
+
+  const refreshHandle = () => getItem({ id });
 
   const content = (() => {
     switch (true) {
@@ -83,7 +89,12 @@ const Item = () => {
         >
           <img src={close} alt="Close" />
         </button>
-        <h3 className={styles.title}>Character Details</h3>
+        <div className={styles.header}>
+          <h3 className={styles.title}>Character Details</h3>
+          <button onClick={refreshHandle} className={styles.button}>
+            Refresh
+          </button>
+        </div>
         {content}
       </div>
     </div>

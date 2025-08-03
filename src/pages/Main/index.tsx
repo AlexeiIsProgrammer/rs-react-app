@@ -21,7 +21,7 @@ import {
 import getCSVHref from '../../utils/getCSVHref';
 import styles from './Main.module.scss';
 import ThemeButton from '../../components/ThemeButton';
-import { useGetItemsQuery } from '../../store/api';
+import { useGetItemsQuery, useLazyGetItemsQuery } from '../../store/api';
 
 const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
@@ -35,6 +35,8 @@ const Main = () => {
   const [limit] = useState<number>(10);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = useMemo(() => +(searchParams.get('page') || 1), [searchParams]);
+
+  const [getItems] = useLazyGetItemsQuery();
 
   const {
     data,
@@ -67,6 +69,9 @@ const Main = () => {
   const download = `${areSelectedItemsCount}_items.csv`;
 
   const unselectAllHandle = () => dispatch(unselectAllItems());
+
+  const refreshHandle = () =>
+    getItems({ name: search, limit, page, expanded: true });
 
   const content = (() => {
     switch (true) {
@@ -107,9 +112,15 @@ const Main = () => {
 
       <div className={styles.contentWrapper}>
         <div onClick={onMainPanelClick} className={styles.mainPanel}>
-          <h2 className={styles.panelTitle}>
-            {search ? `Results for "${search}"` : 'All Characters'}
-          </h2>
+          <div className={styles.headerPanel}>
+            <h2 className={styles.panelTitle}>
+              {search ? `Results for "${search}"` : 'All Characters'}
+            </h2>
+
+            <button onClick={refreshHandle} className={styles.button}>
+              Refresh
+            </button>
+          </div>
           {content}
         </div>
         <Outlet />
