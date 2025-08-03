@@ -97,7 +97,7 @@ const Main = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Star Wars Character Search</h1>
+        <h1 className={styles.title}>Star Wars Character Search SSR</h1>
         <p>
           <Link to="/about" className={styles.aboutLink}>
             About me
