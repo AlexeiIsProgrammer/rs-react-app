@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react';
-import type { Character } from '../../types/interfaces';
+
+import type { Character } from '@/types/interfaces';
 
 export type CardProps = {
   character: Character;

@@ -1,12 +1,13 @@
-import { screen, fireEvent, waitFor } from '@testing-library/react';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { routes } from '../../../router';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { http, HttpResponse } from 'msw';
 import { createMemoryRouter, RouterProvider } from 'react-router';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { MAIN_ROUTE } from '../../../constants';
+import { server } from '../../../mocks/server';
+import { routes } from '../../../router';
 import { Stub } from '../../../router/utils';
 import { renderWithProviders } from '../../../store/util';
-import { server } from '../../../mocks/server';
-import { http, HttpResponse } from 'msw';
 
 const SEARCHED_TEXT = 'Luke Skywalker';
 const SEARCHED_TERM = 'Luke';

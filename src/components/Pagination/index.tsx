@@ -1,9 +1,11 @@
-import type { PaginationProps } from './types';
-import leftArrow from '../../assets/left-arrow.svg';
-import rightArrow from '../../assets/right-arrow.svg';
-import useGetPaginationNumbers from '../../hooks/useGetPaginationNumbers';
 import { useMemo } from 'react';
+
+import leftArrow from '#assets/left-arrow.svg';
+import rightArrow from '#assets/right-arrow.svg';
+import useGetPaginationNumbers from '#hooks/useGetPaginationNumbers';
+
 import styles from './Pagination.module.scss';
+import type { PaginationProps } from './types';
 
 const Pagination = ({
   totalItems,

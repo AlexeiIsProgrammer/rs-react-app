@@ -7,6 +7,7 @@ import tseslint from 'typescript-eslint';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import reactCompiler from 'eslint-plugin-react-compiler';
 import jestFormatting from 'eslint-plugin-jest-formatting';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -32,10 +33,14 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'react-compiler': reactCompiler,
-      'jest-formatting': jestFormatting
+      'jest-formatting': jestFormatting,
+      'simple-import-sort': simpleImportSort
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
+      'import/order': 'off',
       "jest-formatting/padding-around-test-blocks": "error",
       'react-refresh/only-export-components': [
         'warn',

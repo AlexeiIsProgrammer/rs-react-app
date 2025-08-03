@@ -1,12 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-
-import selectedItemsReducer from './slices/selectedItemsSlice';
 import {
+  type TypedUseSelectorHook,
   useDispatch,
   useSelector,
-  type TypedUseSelectorHook,
 } from 'react-redux';
+
 import { starWarsApi } from './api';
+import selectedItemsReducer from './slices/selectedItemsSlice';
 
 const rootReducer = combineReducers({
   selectedItems: selectedItemsReducer,

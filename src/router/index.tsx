@@ -1,10 +1,11 @@
 import { createHashRouter, redirect } from 'react-router';
-import App from '../app/App';
-import Item from '../pages/Item';
-import NotFound from '../pages/NotFound';
-import Main from '../pages/Main';
-import About from '../pages/About';
-import { MAIN_ROUTE } from '../constants';
+
+import App from '#app/index';
+import { MAIN_ROUTE } from '#constants/index';
+import About from '#pages/About';
+import Item from '#pages/Item';
+import Main from '#pages/Main';
+import NotFound from '#pages/NotFound';
 
 export const routes = [
   {

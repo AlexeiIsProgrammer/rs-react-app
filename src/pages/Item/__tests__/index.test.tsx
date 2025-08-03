@@ -4,15 +4,16 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { routes } from '../../../router';
-import Item from '..';
+import { http, HttpResponse } from 'msw';
 import { createMemoryRouter, RouterProvider } from 'react-router';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { MAIN_ROUTE } from '../../../constants';
+import { server } from '../../../mocks/server';
+import { routes } from '../../../router';
 import { StubProvider } from '../../../router/utils';
 import { renderWithProviders } from '../../../store/util';
-import { http, HttpResponse } from 'msw';
-import { server } from '../../../mocks/server';
+import Item from '..';
 
 describe('Item page', () => {
   beforeEach(() => {

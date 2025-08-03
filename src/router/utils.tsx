@@ -4,6 +4,7 @@ import {
   createRoutesStub,
   RouterProvider,
 } from 'react-router';
+
 import { routes } from '.';
 
 export const Stub = createRoutesStub(routes);

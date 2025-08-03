@@ -1,6 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+
+import type { Character } from '#types/interfaces';
+
 import type { RootState } from '..';
-import type { Character } from '../../types/interfaces';
 
 type ItemType = Character;
 

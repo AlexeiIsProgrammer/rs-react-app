@@ -1,7 +1,10 @@
 import '@testing-library/jest-dom';
-import { afterAll, beforeAll, vi } from 'vitest';
-import { server } from '../src/mocks/server';
+
 import { afterEach } from 'node:test';
+
+import { afterAll, beforeAll, vi } from 'vitest';
+
+import { server } from '../src/mocks/server';
 
 export const mockCharacter = {
   name: 'Luke Skywalker',

@@ -1,9 +1,11 @@
 import { useLocation, useNavigate, useParams } from 'react-router';
-import Spinner from '../../components/Spinner';
-import { MAIN_ROUTE } from '../../constants';
-import close from '../../assets/close.svg';
+
+import close from '#assets/close.svg';
+import Spinner from '#components/Spinner';
+import { MAIN_ROUTE } from '#constants/index';
+import { useGetItemQuery, useLazyGetItemQuery } from '#store/api';
+
 import styles from './Item.module.scss';
-import { useGetItemQuery, useLazyGetItemQuery } from '../../store/api';
 
 const Item = () => {
   const { detailsId } = useParams();

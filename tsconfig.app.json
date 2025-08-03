@@ -21,7 +21,32 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+
+    "baseUrl": ".",
+    "paths": {
+      "#app/*": ["./src/app/*"],
+      "#assets/*": ["./src/assets/*"],
+      "#components/*": ["./src/components/*"],
+      "#constants/*": ["./src/constants/*"],
+      "#context/*": ["./src/context/*"],
+      "#hooks/*": ["./src/hooks/*"],
+      "#mocks/*": ["./src/mocks/*"],
+      "#pages/*": ["./src/pages/*"],
+      "#router/*": ["./src/router/*"],
+      "#store/*": ["./src/store/*"],
+      "#types/*": ["./src/types/*"],
+      "#utils/*": ["./src/utils/*"]
+    }
   },
-  "include": ["src", "tests", "@testing-library/jest-dom"]
+
+  "include": [
+    "src",
+    "tests",
+    "@testing-library/jest-dom",
+    "vite.config.ts",
+    "src/vite-env.d.ts"
+  ]
 }

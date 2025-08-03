@@ -1,5 +1,7 @@
 import { Link } from 'react-router';
-import notFound from '../../assets/not-found.svg';
+
+import notFound from '#assets/not-found.svg';
+
 import styles from './NotFound.module.scss';
 
 const NotFound = () => {

@@ -1,10 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 import type {
-  StarWarsGetItemsResponse,
-  GetItemsResponse,
   GetItemResponse,
+  GetItemsResponse,
   StarWarsGetItemResponse,
-} from '../../types/interfaces';
+  StarWarsGetItemsResponse,
+} from '#types/interfaces';
+
 import type { GetItemRequest, GetItemsRequest } from './types';
 
 export const starWarsApi = createApi({

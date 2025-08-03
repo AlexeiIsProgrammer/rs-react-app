@@ -1,5 +1,7 @@
 import { Link } from 'react-router';
-import alex from '../../assets/alex.webp';
+
+import alex from '#assets/alex.webp';
+
 import styles from './About.module.scss';
 
 const About = () => {
