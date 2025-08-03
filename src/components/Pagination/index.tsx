@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import leftArrow from '#assets/left-arrow.svg';
-import rightArrow from '#assets/right-arrow.svg';
+import LeftArrow from '#assets/left-arrow.svg?react';
+import RightArrow from '#assets/right-arrow.svg?react';
 import useGetPaginationNumbers from '#hooks/useGetPaginationNumbers';
 
 import styles from './Pagination.module.scss';
@@ -61,7 +61,7 @@ const Pagination = ({
           disabled={currentPage === 1}
           className={`${styles.paginationButton} ${styles.leftButton}`}
         >
-          <img className={styles.arrowIcon} src={leftArrow} alt="Previous" />
+          <LeftArrow className={styles.arrowIcon} title="Previous" />
           <span className={styles.mobileText}>Previous</span>
         </button>
 
@@ -115,7 +115,7 @@ const Pagination = ({
           className={`${styles.paginationButton} ${styles.rightButton}`}
         >
           <span className={styles.mobileText}>Next</span>
-          <img className={styles.arrowIcon} src={rightArrow} alt="Next" />
+          <RightArrow className={styles.arrowIcon} title="Next" />
         </button>
       </nav>
     </div>

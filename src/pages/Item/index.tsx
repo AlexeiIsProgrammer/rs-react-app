@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, useParams } from 'react-router';
 
-import close from '#assets/close.svg';
+import Close from '#assets/close.svg?react';
 import Spinner from '#components/Spinner';
 import { MAIN_ROUTE } from '#constants/index';
 import { useGetItemQuery, useLazyGetItemQuery } from '#store/api';
@@ -89,7 +89,7 @@ const Item = () => {
           className={styles.closeButton}
           aria-label="Close panel"
         >
-          <img src={close} alt="Close" />
+          <Close />
         </button>
         <div className={styles.header}>
           <h3 className={styles.title}>Character Details</h3>
