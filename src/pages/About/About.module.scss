@@ -1,6 +1,5 @@
 .container {
   min-height: 100vh;
-  background-color: #f9fafb;
   padding: 1.5rem;
 }
 
@@ -19,6 +18,10 @@
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 1.5rem;
+}
+
+.section {
+  position: static;
 }
 
 .sectionTitle {

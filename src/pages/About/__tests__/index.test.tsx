@@ -1,12 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { Stub } from '../../../router/utils';
+import { renderWithProviders } from '../../../store/util';
 
 describe('About page', () => {
   it('displays text correctly', () => {
-    render(<Stub initialEntries={['/about']} />);
+    renderWithProviders(<Stub initialEntries={['/about']} />);
 
-    expect(screen.getByTitle('React course')).toBeInTheDocument();
+    expect(screen.getByTitle(/React course/)).toBeInTheDocument();
     expect(screen.getByTitle('Back to main')).toBeInTheDocument();
   });
 });
