@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import Card from '../index';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { brokenCharacter, mockCharacter } from '../../../../tests/setup';
+import Card from '../index';
 
 describe('Card Component', () => {
   const ACTIVE_CLASS = /active/;

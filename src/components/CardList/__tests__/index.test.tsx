@@ -1,9 +1,10 @@
 import { screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import CardList from '../index';
-import type { Character } from '../../../types/interfaces';
+import { describe, expect, it } from 'vitest';
+
 import { StubProvider } from '../../../router/utils';
 import { renderWithProviders } from '../../../store/util';
+import type { Character } from '../../../types/interfaces';
+import CardList from '../index';
 
 const charactersMock: Character[] = [
   {

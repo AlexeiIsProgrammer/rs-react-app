@@ -41,7 +41,6 @@
 .panelTitle {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-right: auto;
 }
 
 .errorMessage {
@@ -88,4 +87,10 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+}
+
+.headerPanel {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
 }

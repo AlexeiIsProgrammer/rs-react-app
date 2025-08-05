@@ -1,19 +1,35 @@
 import { useLocation, useNavigate, useParams } from 'react-router';
-import useGetItem from '../../hooks/useGetItem';
-import Spinner from '../../components/Spinner';
-import { MAIN_ROUTE } from '../../constants';
-import close from '../../assets/close.svg';
+
+import Close from '#assets/close.svg?react';
+import Spinner from '#components/Spinner';
+import { MAIN_ROUTE } from '#constants/index';
+import { useGetItemQuery, useLazyGetItemQuery } from '#store/api';
+
 import styles from './Item.module.scss';
 
 const Item = () => {
-  const { detailsId: id } = useParams();
+  const { detailsId } = useParams();
   const navigate = useNavigate();
   const { search } = useLocation();
-  const { data, isLoading, error } = useGetItem({ id: id || '' });
+
+  const id = detailsId || '';
+
+  const [getItem] = useLazyGetItemQuery();
+  const {
+    data,
+    isLoading: isGetItemLoading,
+    error,
+    isError,
+    isFetching: isGetItemFetching,
+  } = useGetItemQuery({ id });
+
+  const isLoading = isGetItemLoading || isGetItemFetching;
 
   const closePanel = () => {
     navigate({ pathname: MAIN_ROUTE, search });
   };
+
+  const refreshHandle = () => getItem({ id });
 
   const content = (() => {
     switch (true) {
@@ -23,10 +39,10 @@ const Item = () => {
             <Spinner />
           </div>
         );
-      case Boolean(error):
+      case isError:
         return (
           <div data-testid="error-message" className={styles.errorMessage}>
-            {error}
+            {'error' in error ? error.error : 'Unknown error'}
           </div>
         );
       case !!data:
@@ -73,9 +89,14 @@ const Item = () => {
           className={styles.closeButton}
           aria-label="Close panel"
         >
-          <img src={close} alt="Close" />
+          <Close />
         </button>
-        <h3 className={styles.title}>Character Details</h3>
+        <div className={styles.header}>
+          <h3 className={styles.title}>Character Details</h3>
+          <button onClick={refreshHandle} className={styles.button}>
+            Refresh
+          </button>
+        </div>
         {content}
       </div>
     </div>

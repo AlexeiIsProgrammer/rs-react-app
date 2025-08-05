@@ -4,6 +4,7 @@ import {
   createRoutesStub,
   RouterProvider,
 } from 'react-router';
+
 import { routes } from '.';
 
 export const Stub = createRoutesStub(routes);
@@ -11,9 +12,11 @@ export const Stub = createRoutesStub(routes);
 export const StubProvider = ({
   element,
   route,
+  initialEntries = ['/'],
 }: {
   element: JSX.Element;
   route?: string;
+  initialEntries?: string[];
 }) => {
   const router = createMemoryRouter(
     [
@@ -22,7 +25,7 @@ export const StubProvider = ({
         element,
       },
     ],
-    { initialEntries: ['/'] }
+    { initialEntries }
   );
 
   return <RouterProvider router={router} />;

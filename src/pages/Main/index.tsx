@@ -1,9 +1,4 @@
 import { useMemo, useState } from 'react';
-import Search from '../../components/Search';
-import CardList from '../../components/CardList';
-import Spinner from '../../components/Spinner';
-import Pagination from '../../components/Pagination';
-import useGetItems from '../../hooks/useGetItems';
 import {
   Link,
   Outlet,
@@ -11,17 +6,24 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router';
-import useLocalStorage from '../../hooks/useLocalStorage';
-import { LOCAL_STORAGE_SEARCH, MAIN_ROUTE } from '../../constants';
-import { useAppDispatch, useAppSelector } from '../../store';
+
+import CardList from '#components/CardList';
+import Pagination from '#components/Pagination';
+import Search from '#components/Search';
+import Spinner from '#components/Spinner';
+import ThemeButton from '#components/ThemeButton';
+import { LOCAL_STORAGE_SEARCH, MAIN_ROUTE } from '#constants/index';
+import useLocalStorage from '#hooks/useLocalStorage';
+import { useGetItemsQuery, useLazyGetItemsQuery } from '#store/api';
+import { useAppDispatch, useAppSelector } from '#store/index';
 import {
   areSelectedItemsCountSelector,
   selectedItemsSelector,
   unselectAllItems,
-} from '../../store/slices/selectedItemsSlice';
-import getCSVHref from '../../utils/getCSVHref';
+} from '#store/slices/selectedItemsSlice';
+import getCSVHref from '#utils/getCSVHref';
+
 import styles from './Main.module.scss';
-import ThemeButton from '../../components/ThemeButton';
 
 const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
@@ -36,7 +38,22 @@ const Main = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = useMemo(() => +(searchParams.get('page') || 1), [searchParams]);
 
-  const { data, isLoading, error } = useGetItems({ search, limit, page });
+  const [getItems] = useLazyGetItemsQuery();
+
+  const {
+    data,
+    isLoading: isGetItemsLoading,
+    error,
+    isError,
+    isFetching: isGetItemsFetching,
+  } = useGetItemsQuery({
+    name: search,
+    limit,
+    page,
+    expanded: true,
+  });
+
+  const isLoading = isGetItemsLoading || isGetItemsFetching;
 
   const onPageChange = (currentPage: number) => {
     setSearchParams({ page: currentPage.toString() });
@@ -55,12 +72,15 @@ const Main = () => {
 
   const unselectAllHandle = () => dispatch(unselectAllItems());
 
+  const refreshHandle = () =>
+    getItems({ name: search, limit, page, expanded: true });
+
   const content = (() => {
     switch (true) {
-      case Boolean(error):
+      case isError:
         return (
           <div className={styles.errorMessage} data-testid="error-message">
-            Error: {error}
+            {'error' in error ? error.error : 'Unknown error'}
           </div>
         );
       case Boolean(data):
@@ -94,9 +114,15 @@ const Main = () => {
 
       <div className={styles.contentWrapper}>
         <div onClick={onMainPanelClick} className={styles.mainPanel}>
-          <h2 className={styles.panelTitle}>
-            {search ? `Results for "${search}"` : 'All Characters'}
-          </h2>
+          <div className={styles.headerPanel}>
+            <h2 className={styles.panelTitle}>
+              {search ? `Results for "${search}"` : 'All Characters'}
+            </h2>
+
+            <button onClick={refreshHandle} className={styles.button}>
+              Refresh
+            </button>
+          </div>
           {content}
         </div>
         <Outlet />

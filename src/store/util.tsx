@@ -1,9 +1,10 @@
-import React, { type JSX, type PropsWithChildren } from 'react';
-import { render } from '@testing-library/react';
 import type { RenderOptions } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import React, { type JSX, type PropsWithChildren } from 'react';
 import { Provider } from 'react-redux';
-import { setupStore, type AppStore, type RootState } from '.';
+
 import { ThemeProvider } from '../context/ThemeContext';
+import { type AppStore, type RootState, setupStore } from '.';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: Partial<RootState>;

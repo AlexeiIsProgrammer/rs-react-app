@@ -1,9 +1,11 @@
-import type { PaginationProps } from './types';
-import leftArrow from '../../assets/left-arrow.svg';
-import rightArrow from '../../assets/right-arrow.svg';
-import useGetPaginationNumbers from '../../hooks/useGetPaginationNumbers';
 import { useMemo } from 'react';
+
+import LeftArrow from '#assets/left-arrow.svg?react';
+import RightArrow from '#assets/right-arrow.svg?react';
+import useGetPaginationNumbers from '#hooks/useGetPaginationNumbers';
+
 import styles from './Pagination.module.scss';
+import type { PaginationProps } from './types';
 
 const Pagination = ({
   totalItems,
@@ -59,7 +61,7 @@ const Pagination = ({
           disabled={currentPage === 1}
           className={`${styles.paginationButton} ${styles.leftButton}`}
         >
-          <img className={styles.arrowIcon} src={leftArrow} alt="Previous" />
+          <LeftArrow className={styles.arrowIcon} title="Previous" />
           <span className={styles.mobileText}>Previous</span>
         </button>
 
@@ -96,7 +98,7 @@ const Pagination = ({
             <span className={styles.ellipsis}>...</span>
           )}
 
-        {currentPage <= totalPages - Math.floor(maxVisiblePages / 2) &&
+        {currentPage < totalPages - Math.floor(maxVisiblePages / 2) &&
           totalPages > maxVisiblePages && (
             <button
               onClick={onClickButtonHandle(() => handlePageChange(totalPages))}
@@ -113,7 +115,7 @@ const Pagination = ({
           className={`${styles.paginationButton} ${styles.rightButton}`}
         >
           <span className={styles.mobileText}>Next</span>
-          <img className={styles.arrowIcon} src={rightArrow} alt="Next" />
+          <RightArrow className={styles.arrowIcon} title="Next" />
         </button>
       </nav>
     </div>

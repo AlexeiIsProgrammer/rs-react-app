@@ -1,16 +1,18 @@
-import Card from '../Card';
+import { type MouseEvent, useCallback, useMemo } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
-import { MAIN_ROUTE } from '../../constants';
-import type { CardListProps } from './types';
-import { useCallback, useMemo, type MouseEvent } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store';
+
+import { MAIN_ROUTE } from '#constants/index';
+import { useAppDispatch, useAppSelector } from '#store/index';
 import {
   selectedItemsSelector,
   selectItem,
   unselectItem,
-} from '../../store/slices/selectedItemsSlice';
-import type { Character } from '../../types/interfaces';
+} from '#store/slices/selectedItemsSlice';
+import type { Character } from '#types/interfaces';
+
+import Card from '../Card';
 import styles from './CardList.module.scss';
+import type { CardListProps } from './types';
 
 const CardList = ({ characters, isLoading }: CardListProps) => {
   const dispatch = useAppDispatch();

@@ -1,4 +1,4 @@
-import type { Character } from '../../types/interfaces';
+import type { Character } from '#types/interfaces';
 
 export type CardListProps = {
   characters: Character[];
