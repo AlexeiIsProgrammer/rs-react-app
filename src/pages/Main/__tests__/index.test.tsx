@@ -1,6 +1,6 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { mockCharacter } from '../../../../tests/setup';
+import { vi, describe, it, expect, beforeEach, beforeAll } from 'vitest';
+import { defineGlobals, mockCharacter } from '../../../../tests/setup';
 import { routes } from '../../../router';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { MAIN_ROUTE } from '../../../constants';
@@ -21,6 +21,10 @@ describe('Main Component', () => {
     limit: 10,
     total_pages: 10,
   };
+
+  beforeAll(() => {
+    defineGlobals();
+  });
 
   beforeEach(() => {
     vi.resetAllMocks();

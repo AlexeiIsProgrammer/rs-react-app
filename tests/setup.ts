@@ -25,18 +25,20 @@ export const setViewport = (width: number, height: number = 720) => {
   window.dispatchEvent(new Event('resize'));
 };
 
-global.URL.createObjectURL = vi.fn(() => 'mock-url');
+export const defineGlobals = () => {
+  global.URL.createObjectURL = vi.fn(() => 'mock-url');
 
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: (query: string) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  }),
-});
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: (query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }),
+  });
+};

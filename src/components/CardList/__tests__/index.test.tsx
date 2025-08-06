@@ -1,9 +1,10 @@
 import { screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import CardList from '../index';
 import type { Character } from '../../../types/interfaces';
 import { StubProvider } from '../../../router/utils';
 import { renderWithProviders } from '../../../store/util';
+import { defineGlobals } from '../../../../tests/setup';
 
 const charactersMock: Character[] = [
   {
@@ -25,6 +26,10 @@ const charactersMock: Character[] = [
 ];
 
 describe('CardList Component', () => {
+  beforeAll(() => {
+    defineGlobals();
+  });
+
   it('renders correct number of items when data is provided', () => {
     renderWithProviders(
       <StubProvider

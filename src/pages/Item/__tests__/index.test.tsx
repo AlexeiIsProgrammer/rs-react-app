@@ -4,9 +4,9 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, beforeAll } from 'vitest';
 import { routes } from '../../../router';
-import { mockCharacter } from '../../../../tests/setup';
+import { defineGlobals, mockCharacter } from '../../../../tests/setup';
 import Item from '..';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { MAIN_ROUTE } from '../../../constants';
@@ -15,6 +15,10 @@ import { renderWithProviders } from '../../../store/util';
 
 describe('Item page', () => {
   const responseMock = { result: { properties: mockCharacter, uid: '1' } };
+
+  beforeAll(() => {
+    defineGlobals();
+  });
 
   beforeEach(() => {
     vi.resetAllMocks();
