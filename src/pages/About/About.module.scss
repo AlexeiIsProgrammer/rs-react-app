@@ -9,7 +9,7 @@
   margin-right: auto;
   background-color: white;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.25rem 0.375rem -0.063rem rgba(0, 0, 0, 0.1);
   padding: 2rem;
 }
 
@@ -45,7 +45,7 @@
 .avatar {
   width: 4rem;
   height: 4rem;
-  border-radius: 9999px;
+  border-radius: 50px;
   overflow: hidden;
   background-color: #d1d5db;
   margin-right: 1rem;
@@ -70,6 +70,6 @@
 }
 
 .divider {
-  border-top: 1px solid #e5e7eb;
+  border-top: 0.063rem solid #e5e7eb;
   padding-top: 1.5rem;
 }
