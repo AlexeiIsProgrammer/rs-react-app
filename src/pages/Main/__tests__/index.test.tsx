@@ -1,10 +1,11 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { mockCharacter } from '../../../../tests/setup';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { vi, describe, it, expect, beforeEach, beforeAll } from 'vitest';
+import { defineGlobals, mockCharacter } from '../../../../tests/setup';
 import { routes } from '../../../router';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { MAIN_ROUTE } from '../../../constants';
 import { Stub } from '../../../router/utils';
+import { renderWithProviders } from '../../../store/util';
 
 const SEARCHED_TEXT = 'Luke Skywalker';
 const SEARCHED_TERM = 'Luke';
@@ -21,6 +22,10 @@ describe('Main Component', () => {
     total_pages: 10,
   };
 
+  beforeAll(() => {
+    defineGlobals();
+  });
+
   beforeEach(() => {
     vi.resetAllMocks();
     localStorage.clear();
@@ -34,7 +39,7 @@ describe('Main Component', () => {
 
     localStorage.setItem('swapiSearch', SEARCHED_TERM);
 
-    render(<Stub initialEntries={['/main']} />);
+    renderWithProviders(<Stub initialEntries={['/main']} />);
 
     await waitFor(() => {
       expect(screen.getByText(/Results for "Luke"/i)).toBeInTheDocument();
@@ -55,7 +60,7 @@ describe('Main Component', () => {
         })
     );
 
-    render(<Stub initialEntries={['/main']} />);
+    renderWithProviders(<Stub initialEntries={['/main']} />);
     expect(screen.getByText(/searching.../i)).toBeInTheDocument();
 
     await waitFor(() => {
@@ -69,7 +74,7 @@ describe('Main Component', () => {
       json: async () => responseMock,
     } as Response);
 
-    render(<Stub initialEntries={['/main']} />);
+    renderWithProviders(<Stub initialEntries={['/main']} />);
 
     const input = screen.getByTestId('search-input');
     const button = screen.getByTestId('search-button');
@@ -89,7 +94,7 @@ describe('Main Component', () => {
       json: async () => ({}),
     } as Response);
 
-    render(<Stub initialEntries={['/main']} />);
+    renderWithProviders(<Stub initialEntries={['/main']} />);
 
     await waitFor(() => {
       expect(screen.getByTestId('error-message')).toBeInTheDocument();
@@ -102,7 +107,7 @@ describe('Main Component', () => {
       json: async () => responseMock,
     } as Response);
 
-    render(<Stub initialEntries={['/main']} />);
+    renderWithProviders(<Stub initialEntries={['/main']} />);
 
     const input = screen.getByTestId('search-input');
 
@@ -127,7 +132,7 @@ describe('Main Component', () => {
       initialEntries: [`${MAIN_ROUTE}?page=1`],
     });
 
-    render(<RouterProvider router={router} />);
+    renderWithProviders(<RouterProvider router={router} />);
 
     await waitFor(() => {
       const nextPaginationButton = screen.getByTitle('next');

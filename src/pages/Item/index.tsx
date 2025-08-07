@@ -2,15 +2,13 @@ import { useLocation, useNavigate, useParams } from 'react-router';
 import useGetItem from '../../hooks/useGetItem';
 import Spinner from '../../components/Spinner';
 import { MAIN_ROUTE } from '../../constants';
-
 import close from '../../assets/close.svg';
+import styles from './Item.module.scss';
 
 const Item = () => {
   const { detailsId: id } = useParams();
-
   const navigate = useNavigate();
   const { search } = useLocation();
-
   const { data, isLoading, error } = useGetItem({ id: id || '' });
 
   const closePanel = () => {
@@ -21,50 +19,45 @@ const Item = () => {
     switch (true) {
       case Boolean(isLoading):
         return (
-          <div className="flex justify-center items-center h-40">
+          <div className={styles.spinnerContainer}>
             <Spinner />
           </div>
         );
       case Boolean(error):
         return (
-          <div
-            data-testid="error-message"
-            className="p-4 bg-red-100 text-red-700 rounded border border-red-300"
-          >
+          <div data-testid="error-message" className={styles.errorMessage}>
             {error}
           </div>
         );
       case !!data:
         return (
-          <div className="space-y-4">
+          <div className={styles.content}>
             <div>
-              <h4 className="text-lg font-bold text-gray-900">{data.name}</h4>
+              <h4 className={styles.name}>{data.name}</h4>
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
+            <div className={styles.detailsGrid}>
               <div>
-                <p className="text-sm text-gray-500">Birth Year</p>
-                <p className="font-medium">{data.birth_year}</p>
+                <p className={styles.detailLabel}>Birth Year</p>
+                <p className={styles.detailValue}>{data.birth_year}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Gender</p>
-                <p className="font-medium">{data.gender}</p>
+                <p className={styles.detailLabel}>Gender</p>
+                <p className={styles.detailValue}>{data.gender}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Height</p>
-                <p className="font-medium">{data.height} cm</p>
+                <p className={styles.detailLabel}>Height</p>
+                <p className={styles.detailValue}>{data.height} cm</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Mass</p>
-                <p className="font-medium">{data.mass} kg</p>
+                <p className={styles.detailLabel}>Mass</p>
+                <p className={styles.detailValue}>{data.mass} kg</p>
               </div>
             </div>
           </div>
         );
-
       default:
         return (
-          <div className="text-center py-8 text-gray-500">
+          <div className={styles.emptyState}>
             No character details available
           </div>
         );
@@ -72,21 +65,17 @@ const Item = () => {
   })();
 
   return (
-    <div className="lg:w-1/3 flex-shrink-0 relative">
-      <div className="bg-white p-6 rounded-lg shadow-md sticky top-6 overflow-y-auto">
+    <div className={styles.container}>
+      <div className={styles.panel}>
         <button
           title="close"
           onClick={closePanel}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 w-[25px] h-[25px]"
+          className={styles.closeButton}
           aria-label="Close panel"
         >
-          <img src={close} />
+          <img src={close} alt="Close" />
         </button>
-
-        <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">
-          Character Details
-        </h3>
-
+        <h3 className={styles.title}>Character Details</h3>
         {content}
       </div>
     </div>

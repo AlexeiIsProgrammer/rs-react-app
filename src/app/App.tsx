@@ -1,8 +1,9 @@
 import { Outlet } from 'react-router';
+import styles from './App.module.scss';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={styles.container}>
       <Outlet />
     </div>
   );

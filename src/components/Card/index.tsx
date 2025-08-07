@@ -1,20 +1,36 @@
 import type { CardProps } from './types';
+import styles from './Card.module.scss';
+import clsx from 'clsx';
 
-const Card = ({ character, onClick, isActive }: CardProps) => (
+const Card = ({
+  character,
+  onClick,
+  checked,
+  onCheckboxChange,
+  isActive,
+}: CardProps) => (
   <div
-    onClick={(e) => {
-      e.stopPropagation();
-
-      onClick(character.id);
-    }}
+    onClick={onClick(character.id)}
     data-testid="card"
-    className={`p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow ${isActive ? 'shadow-lg' : ''}`}
+    className={clsx(styles.card, {
+      [styles.active]: isActive,
+    })}
   >
-    <h3 className="text-lg font-semibold text-gray-800">{character.name}</h3>
-    <p className="text-gray-600">
+    <div className={styles.header}>
+      <h3 className={styles.title}>{character.name}</h3>
+
+      <input
+        key={checked.toString()}
+        type="checkbox"
+        onChange={() => {}}
+        checked={checked}
+        onClick={onCheckboxChange(character, !checked)}
+      />
+    </div>
+    <p className={styles.birth}>
       Born: {character.birth_year} | Gender: {character.gender}
     </p>
-    <p className="text-sm text-gray-500 mt-1">
+    <p className={styles.info}>
       Height: {character.height}cm, Mass: {character.mass}kg
     </p>
   </div>

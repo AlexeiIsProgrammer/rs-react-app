@@ -4,14 +4,21 @@ import Card from '../index';
 import { brokenCharacter, mockCharacter } from '../../../../tests/setup';
 
 describe('Card Component', () => {
-  const ACTIVE_CLASS = 'shadow-lg';
+  const ACTIVE_CLASS = /active/;
   const TEST_ID = 'card';
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('displays item name and description correctly', () => {
-    render(<Card character={mockCharacter} onClick={() => {}} />);
+    render(
+      <Card
+        character={mockCharacter}
+        checked={false}
+        onCheckboxChange={() => () => {}}
+        onClick={() => () => {}}
+      />
+    );
 
     expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     expect(screen.getByText(/Born: 19BBY/i)).toBeInTheDocument();
@@ -21,7 +28,14 @@ describe('Card Component', () => {
   });
 
   it('handles missing props gracefully', () => {
-    render(<Card character={brokenCharacter} onClick={() => {}} />);
+    render(
+      <Card
+        character={brokenCharacter}
+        checked={false}
+        onCheckboxChange={() => () => {}}
+        onClick={() => () => {}}
+      />
+    );
 
     expect(screen.getByTestId(TEST_ID)).toBeInTheDocument();
   });
@@ -33,7 +47,9 @@ describe('Card Component', () => {
     render(
       <Card
         character={mockCharacter}
-        onClick={() => {
+        checked={false}
+        onCheckboxChange={() => () => {}}
+        onClick={() => () => {
           console.log(TEST_LOG);
         }}
       />
@@ -50,20 +66,35 @@ describe('Card Component', () => {
   });
 
   it('handle active Card', () => {
-    render(<Card character={mockCharacter} onClick={() => {}} isActive />);
+    render(
+      <Card
+        character={mockCharacter}
+        checked={false}
+        onCheckboxChange={() => () => {}}
+        onClick={() => () => {}}
+        isActive
+      />
+    );
 
     const card = screen.getByTestId(TEST_ID);
 
     expect(card).toBeInTheDocument();
-    expect(card).toHaveClass(ACTIVE_CLASS);
+    expect(card.className).toMatch(ACTIVE_CLASS);
   });
 
   it('handle not active Card', () => {
-    render(<Card character={mockCharacter} onClick={() => {}} />);
+    render(
+      <Card
+        character={mockCharacter}
+        checked={false}
+        onCheckboxChange={() => () => {}}
+        onClick={() => () => {}}
+      />
+    );
 
     const card = screen.getByTestId(TEST_ID);
 
     expect(card).toBeInTheDocument();
-    expect(card).not.toHaveClass(ACTIVE_CLASS);
+    expect(card.className).not.toMatch(ACTIVE_CLASS);
   });
 });

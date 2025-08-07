@@ -1,8 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { screen } from '@testing-library/react';
+import { describe, it, expect, beforeAll } from 'vitest';
 import CardList from '../index';
 import type { Character } from '../../../types/interfaces';
 import { StubProvider } from '../../../router/utils';
+import { renderWithProviders } from '../../../store/util';
+import { defineGlobals } from '../../../../tests/setup';
 
 const charactersMock: Character[] = [
   {
@@ -24,32 +26,37 @@ const charactersMock: Character[] = [
 ];
 
 describe('CardList Component', () => {
+  beforeAll(() => {
+    defineGlobals();
+  });
+
   it('renders correct number of items when data is provided', () => {
-    render(
+    renderWithProviders(
       <StubProvider
         element={<CardList characters={charactersMock} isLoading={false} />}
       />
     );
+
     const cards = screen.getAllByTestId('card');
     expect(cards.length).toBe(charactersMock.length);
   });
 
   it('displays "no results" message when data array is empty', () => {
-    render(
+    renderWithProviders(
       <StubProvider element={<CardList characters={[]} isLoading={false} />} />
     );
     expect(screen.getByTestId('not-items-found')).toBeInTheDocument();
   });
 
   it('shows isLoading state while fetching data', () => {
-    render(
+    renderWithProviders(
       <StubProvider element={<CardList characters={[]} isLoading={true} />} />
     );
     expect(screen.getAllByTestId('skeleton')).toHaveLength(5);
   });
 
   it('correctly displays item names and descriptions', () => {
-    render(
+    renderWithProviders(
       <StubProvider
         element={<CardList characters={charactersMock} isLoading={false} />}
       />
@@ -79,7 +86,7 @@ describe('CardList Component', () => {
         id: '1',
       },
     ];
-    render(
+    renderWithProviders(
       <StubProvider
         element={
           <CardList characters={incompleteCharacters} isLoading={false} />

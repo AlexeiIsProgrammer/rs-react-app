@@ -1,20 +1,24 @@
 import {
   fireEvent,
-  render,
   screen,
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, beforeAll } from 'vitest';
 import { routes } from '../../../router';
-import { mockCharacter } from '../../../../tests/setup';
+import { defineGlobals, mockCharacter } from '../../../../tests/setup';
 import Item from '..';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { MAIN_ROUTE } from '../../../constants';
 import { StubProvider } from '../../../router/utils';
+import { renderWithProviders } from '../../../store/util';
 
 describe('Item page', () => {
   const responseMock = { result: { properties: mockCharacter, uid: '1' } };
+
+  beforeAll(() => {
+    defineGlobals();
+  });
 
   beforeEach(() => {
     vi.resetAllMocks();
@@ -22,7 +26,7 @@ describe('Item page', () => {
   });
 
   it('renders details panel', async () => {
-    render(<StubProvider element={<Item />} />);
+    renderWithProviders(<StubProvider element={<Item />} />);
 
     expect(screen.getByText('Character Details')).toBeInTheDocument();
   });
@@ -33,7 +37,7 @@ describe('Item page', () => {
       json: async () => responseMock,
     } as Response);
 
-    render(<StubProvider element={<Item />} />);
+    renderWithProviders(<StubProvider element={<Item />} />);
 
     await waitFor(() => {
       expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
@@ -53,7 +57,7 @@ describe('Item page', () => {
         })
     );
 
-    render(<StubProvider element={<Item />} />);
+    renderWithProviders(<StubProvider element={<Item />} />);
     const spinner = screen.getByTestId('spinner');
     expect(spinner).toBeInTheDocument();
 
@@ -69,7 +73,7 @@ describe('Item page', () => {
       json: async () => ({}),
     } as Response);
 
-    render(<StubProvider element={<Item />} />);
+    renderWithProviders(<StubProvider element={<Item />} />);
 
     await waitFor(() => {
       expect(screen.getByTestId('error-message')).toBeInTheDocument();
@@ -81,7 +85,7 @@ describe('Item page', () => {
       initialEntries: [`${MAIN_ROUTE}/2`],
     });
 
-    render(<RouterProvider router={router} />);
+    renderWithProviders(<RouterProvider router={router} />);
 
     const closeButton = screen.getByTitle('close');
 
