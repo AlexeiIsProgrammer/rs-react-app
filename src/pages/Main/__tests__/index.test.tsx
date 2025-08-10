@@ -2,12 +2,10 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { defineGlobals } from '../../../../tests/setup';
+import { server } from '../../../__mocks__/server';
 import { MAIN_ROUTE } from '../../../constants';
-import { server } from '../../../mocks/server';
-import { routes } from '../../../router';
 import { routes } from '../../../router';
 import { Stub } from '../../../router/utils';
 import { renderWithProviders } from '../../../store/util';

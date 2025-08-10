@@ -1,11 +1,13 @@
 import { useLocation, useNavigate, useParams } from 'react-router';
 
 import Close from '#assets/close.svg?react';
-import Spinner from '#components/Spinner';
 import { MAIN_ROUTE } from '#constants/index';
 import { useGetItemQuery, useLazyGetItemQuery } from '#store/api';
 
+import Data from './Data';
+import Error from './Error';
 import styles from './Item.module.scss';
+import Loading from './Loading';
 
 const Item = () => {
   const { detailsId } = useParams();
@@ -31,46 +33,14 @@ const Item = () => {
 
   const refreshHandle = () => getItem({ id });
 
-  const content = (() => {
+  const getContent = () => {
     switch (true) {
       case Boolean(isLoading):
-        return (
-          <div className={styles.spinnerContainer}>
-            <Spinner />
-          </div>
-        );
+        return <Loading />;
       case isError:
-        return (
-          <div data-testid="error-message" className={styles.errorMessage}>
-            {'error' in error ? error.error : 'Unknown error'}
-          </div>
-        );
+        return <Error error={error} />;
       case !!data:
-        return (
-          <div className={styles.content}>
-            <div>
-              <h4 className={styles.name}>{data.name}</h4>
-            </div>
-            <div className={styles.detailsGrid}>
-              <div>
-                <p className={styles.detailLabel}>Birth Year</p>
-                <p className={styles.detailValue}>{data.birth_year}</p>
-              </div>
-              <div>
-                <p className={styles.detailLabel}>Gender</p>
-                <p className={styles.detailValue}>{data.gender}</p>
-              </div>
-              <div>
-                <p className={styles.detailLabel}>Height</p>
-                <p className={styles.detailValue}>{data.height} cm</p>
-              </div>
-              <div>
-                <p className={styles.detailLabel}>Mass</p>
-                <p className={styles.detailValue}>{data.mass} kg</p>
-              </div>
-            </div>
-          </div>
-        );
+        return <Data data={data} />;
       default:
         return (
           <div className={styles.emptyState}>
@@ -78,7 +48,7 @@ const Item = () => {
           </div>
         );
     }
-  })();
+  };
 
   return (
     <div className={styles.container}>
@@ -97,7 +67,7 @@ const Item = () => {
             Refresh
           </button>
         </div>
-        {content}
+        {getContent()}
       </div>
     </div>
   );

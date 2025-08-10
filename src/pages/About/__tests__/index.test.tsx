@@ -1,5 +1,4 @@
 import { screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import { defineGlobals } from '../../../../tests/setup';

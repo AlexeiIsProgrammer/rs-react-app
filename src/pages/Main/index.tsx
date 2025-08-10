@@ -23,6 +23,7 @@ import {
 } from '#store/slices/selectedItemsSlice';
 import getCSVHref from '#utils/getCSVHref';
 
+import Error from './Error';
 import styles from './Main.module.scss';
 
 const Main = () => {
@@ -75,14 +76,10 @@ const Main = () => {
   const refreshHandle = () =>
     getItems({ name: search, limit, page, expanded: true });
 
-  const content = (() => {
+  const getContent = () => {
     switch (true) {
       case isError:
-        return (
-          <div className={styles.errorMessage} data-testid="error-message">
-            {'error' in error ? error.error : 'Unknown error'}
-          </div>
-        );
+        return <Error error={error} />;
       case Boolean(data):
       case isLoading:
         return (
@@ -92,7 +89,7 @@ const Main = () => {
           </>
         );
     }
-  })();
+  };
 
   return (
     <div className={styles.container}>
@@ -123,7 +120,7 @@ const Main = () => {
               Refresh
             </button>
           </div>
-          {content}
+          {getContent()}
         </div>
         <Outlet />
       </div>
