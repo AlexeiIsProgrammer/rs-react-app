@@ -7,12 +7,15 @@ import {
 import { http, HttpResponse } from 'msw';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { MAIN_ROUTE } from '../../../constants';
 import { server } from '../../../mocks/server';
 import { routes } from '../../../router';
+import { routes } from '../../../router';
 import { StubProvider } from '../../../router/utils';
 import { renderWithProviders } from '../../../store/util';
+import Item from '..';
 import Item from '..';
 
 describe('Item page', () => {

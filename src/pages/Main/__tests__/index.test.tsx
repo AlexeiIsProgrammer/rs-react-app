@@ -1,10 +1,13 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { createMemoryRouter, RouterProvider } from 'react-router';
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { defineGlobals } from '../../../../tests/setup';
 import { MAIN_ROUTE } from '../../../constants';
 import { server } from '../../../mocks/server';
+import { routes } from '../../../router';
 import { routes } from '../../../router';
 import { Stub } from '../../../router/utils';
 import { renderWithProviders } from '../../../store/util';
@@ -13,6 +16,10 @@ const SEARCHED_TEXT = 'Luke Skywalker';
 const SEARCHED_TERM = 'Luke';
 
 describe('Main Component', () => {
+  beforeAll(() => {
+    defineGlobals();
+  });
+
   beforeEach(() => {
     vi.resetAllMocks();
     localStorage.clear();
