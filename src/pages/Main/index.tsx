@@ -14,7 +14,7 @@ import Spinner from '#components/Spinner';
 import ThemeButton from '#components/ThemeButton';
 import { LOCAL_STORAGE_SEARCH, MAIN_ROUTE } from '#constants/index';
 import useLocalStorage from '#hooks/useLocalStorage';
-import { useGetItemsQuery, useLazyGetItemsQuery } from '#store/api';
+import { useGetItemsQuery } from '#store/api';
 import { useAppDispatch, useAppSelector } from '#store/index';
 import {
   areSelectedItemsCountSelector,
@@ -23,6 +23,7 @@ import {
 } from '#store/slices/selectedItemsSlice';
 import getCSVHref from '#utils/getCSVHref';
 
+import Error from './Error';
 import styles from './Main.module.scss';
 
 const Main = () => {
@@ -38,14 +39,13 @@ const Main = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = useMemo(() => +(searchParams.get('page') || 1), [searchParams]);
 
-  const [getItems] = useLazyGetItemsQuery();
-
   const {
     data,
     isLoading: isGetItemsLoading,
     error,
     isError,
     isFetching: isGetItemsFetching,
+    refetch,
   } = useGetItemsQuery({
     name: search,
     limit,
@@ -72,17 +72,10 @@ const Main = () => {
 
   const unselectAllHandle = () => dispatch(unselectAllItems());
 
-  const refreshHandle = () =>
-    getItems({ name: search, limit, page, expanded: true });
-
-  const content = (() => {
+  const getContent = () => {
     switch (true) {
       case isError:
-        return (
-          <div className={styles.errorMessage} data-testid="error-message">
-            {'error' in error ? error.error : 'Unknown error'}
-          </div>
-        );
+        return <Error error={error} />;
       case Boolean(data):
       case isLoading:
         return (
@@ -92,7 +85,7 @@ const Main = () => {
           </>
         );
     }
-  })();
+  };
 
   return (
     <div className={styles.container}>
@@ -119,11 +112,11 @@ const Main = () => {
               {search ? `Results for "${search}"` : 'All Characters'}
             </h2>
 
-            <button onClick={refreshHandle} className={styles.button}>
+            <button onClick={refetch} className={styles.button}>
               Refresh
             </button>
           </div>
-          {content}
+          {getContent()}
         </div>
         <Outlet />
       </div>

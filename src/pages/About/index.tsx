@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 
 import alex from '#assets/alex.webp';
 
+import ThemeButton from '../../components/ThemeButton';
 import styles from './About.module.scss';
 
 const About = () => {
@@ -10,7 +11,9 @@ const About = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h1 className={styles.title}>About This Application</h1>
+        <h1 className={styles.title}>
+          About This Application <ThemeButton />
+        </h1>
 
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Author Information</h2>

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import Search from '../index';
+import Search from '..';
 
 describe('Search Component', () => {
   beforeEach(() => {
