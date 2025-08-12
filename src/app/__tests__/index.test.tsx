@@ -1,9 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
+import { defineGlobals } from 'tests/setup';
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import { defineGlobals } from '../../../tests/setup';
-import { Stub } from '../../router/utils';
-import { renderWithProviders } from '../../store/util';
+import { Stub } from '#router/utils';
+import { renderWithProviders } from '#store/util';
 
 describe('App Component', () => {
   beforeAll(() => {

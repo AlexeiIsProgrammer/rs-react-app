@@ -4,74 +4,77 @@ import { fileURLToPath, URL } from 'url';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import svgr from 'vite-plugin-svgr';
+import tsconfigPaths from 'vite-tsconfig-paths';
+
+const alias = [
+  {
+    find: '#app',
+    replacement: fileURLToPath(new URL('./src/app', import.meta.url)),
+  },
+  {
+    find: '#assets',
+    replacement: fileURLToPath(new URL('./src/assets', import.meta.url)),
+  },
+  {
+    find: '#components',
+    replacement: fileURLToPath(new URL('./src/components', import.meta.url)),
+  },
+  {
+    find: '#constants',
+    replacement: fileURLToPath(new URL('./src/constants', import.meta.url)),
+  },
+  {
+    find: '#context',
+    replacement: fileURLToPath(new URL('./src/context', import.meta.url)),
+  },
+  {
+    find: '#hooks',
+    replacement: fileURLToPath(new URL('./src/hooks', import.meta.url)),
+  },
+  {
+    find: '#mocks',
+    replacement: fileURLToPath(new URL('./src/mocks', import.meta.url)),
+  },
+  {
+    find: '#pages',
+    replacement: fileURLToPath(new URL('./src/pages', import.meta.url)),
+  },
+  {
+    find: '#router',
+    replacement: fileURLToPath(new URL('./src/router', import.meta.url)),
+  },
+  {
+    find: '#store',
+    replacement: fileURLToPath(new URL('./src/store', import.meta.url)),
+  },
+  {
+    find: '#types',
+    replacement: fileURLToPath(new URL('./src/types', import.meta.url)),
+  },
+  {
+    find: '#utils',
+    replacement: fileURLToPath(new URL('./src/utils', import.meta.url)),
+  },
+];
 
 // https://vite.dev/config/
 export default defineConfig({
   base: '/rs-react-app',
   plugins: [
     react(),
+    tsconfigPaths(),
     eslint({
       fix: true,
     }),
     svgr(),
   ],
   resolve: {
-    alias: [
-      {
-        find: '#app',
-        replacement: fileURLToPath(new URL('./src/app', import.meta.url)),
-      },
-      {
-        find: '#assets',
-        replacement: fileURLToPath(new URL('./src/assets', import.meta.url)),
-      },
-      {
-        find: '#components',
-        replacement: fileURLToPath(
-          new URL('./src/components', import.meta.url)
-        ),
-      },
-      {
-        find: '#constants',
-        replacement: fileURLToPath(new URL('./src/constants', import.meta.url)),
-      },
-      {
-        find: '#context',
-        replacement: fileURLToPath(new URL('./src/context', import.meta.url)),
-      },
-      {
-        find: '#hooks',
-        replacement: fileURLToPath(new URL('./src/hooks', import.meta.url)),
-      },
-      {
-        find: '#mocks',
-        replacement: fileURLToPath(new URL('./src/mocks', import.meta.url)),
-      },
-      {
-        find: '#pages',
-        replacement: fileURLToPath(new URL('./src/pages', import.meta.url)),
-      },
-      {
-        find: '#router',
-        replacement: fileURLToPath(new URL('./src/router', import.meta.url)),
-      },
-      {
-        find: '#store',
-        replacement: fileURLToPath(new URL('./src/store', import.meta.url)),
-      },
-      {
-        find: '#types',
-        replacement: fileURLToPath(new URL('./src/types', import.meta.url)),
-      },
-      {
-        find: '#utils',
-        replacement: fileURLToPath(new URL('./src/utils', import.meta.url)),
-      },
-    ],
+    alias,
   },
   test: {
     globals: true,
     environment: 'jsdom',
+
     setupFiles: ['./tests/setup.ts'],
     coverage: {
       provider: 'v8',

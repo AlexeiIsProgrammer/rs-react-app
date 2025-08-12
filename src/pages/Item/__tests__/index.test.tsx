@@ -6,14 +6,15 @@ import {
 } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { createMemoryRouter, RouterProvider } from 'react-router';
+import { server } from 'src/__mocks__/server';
+import { defineGlobals } from 'tests/setup';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { defineGlobals } from '../../../../tests/setup';
-import { server } from '../../../__mocks__/server';
-import { MAIN_ROUTE } from '../../../constants';
-import { routes } from '../../../router';
-import { StubProvider } from '../../../router/utils';
-import { renderWithProviders } from '../../../store/util';
+import { MAIN_ROUTE } from '#constants/index';
+import { routes } from '#router/index';
+import { StubProvider } from '#router/utils';
+import { renderWithProviders } from '#store/util';
+
 import Item from '..';
 
 describe('Item page', () => {
