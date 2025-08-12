@@ -2,7 +2,7 @@ import { useLocation, useNavigate, useParams } from 'react-router';
 
 import Close from '#assets/close.svg?react';
 import { MAIN_ROUTE } from '#constants/index';
-import { useGetItemQuery, useLazyGetItemQuery } from '#store/api';
+import { useGetItemQuery } from '#store/api';
 
 import Data from './Data';
 import Error from './Error';
@@ -16,13 +16,13 @@ const Item = () => {
 
   const id = detailsId || '';
 
-  const [getItem] = useLazyGetItemQuery();
   const {
     data,
     isLoading: isGetItemLoading,
     error,
     isError,
     isFetching: isGetItemFetching,
+    refetch,
   } = useGetItemQuery({ id });
 
   const isLoading = isGetItemLoading || isGetItemFetching;
@@ -30,8 +30,6 @@ const Item = () => {
   const closePanel = () => {
     navigate({ pathname: MAIN_ROUTE, search });
   };
-
-  const refreshHandle = () => getItem({ id });
 
   const getContent = () => {
     switch (true) {
@@ -63,7 +61,7 @@ const Item = () => {
         </button>
         <div className={styles.header}>
           <h3 className={styles.title}>Character Details</h3>
-          <button onClick={refreshHandle} className={styles.button}>
+          <button onClick={refetch} className={styles.button}>
             Refresh
           </button>
         </div>

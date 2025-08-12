@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "format:fix": "prettier --write .",
     "prepare": "husky",
-    "deploy": "tsc -b && vite build && gh-pages -d dist",
+    "deploy": "vite build && gh-pages -d dist",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },

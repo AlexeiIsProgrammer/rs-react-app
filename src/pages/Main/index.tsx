@@ -14,7 +14,7 @@ import Spinner from '#components/Spinner';
 import ThemeButton from '#components/ThemeButton';
 import { LOCAL_STORAGE_SEARCH, MAIN_ROUTE } from '#constants/index';
 import useLocalStorage from '#hooks/useLocalStorage';
-import { useGetItemsQuery, useLazyGetItemsQuery } from '#store/api';
+import { useGetItemsQuery } from '#store/api';
 import { useAppDispatch, useAppSelector } from '#store/index';
 import {
   areSelectedItemsCountSelector,
@@ -39,14 +39,13 @@ const Main = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = useMemo(() => +(searchParams.get('page') || 1), [searchParams]);
 
-  const [getItems] = useLazyGetItemsQuery();
-
   const {
     data,
     isLoading: isGetItemsLoading,
     error,
     isError,
     isFetching: isGetItemsFetching,
+    refetch,
   } = useGetItemsQuery({
     name: search,
     limit,
@@ -72,9 +71,6 @@ const Main = () => {
   const download = `${areSelectedItemsCount}_items.csv`;
 
   const unselectAllHandle = () => dispatch(unselectAllItems());
-
-  const refreshHandle = () =>
-    getItems({ name: search, limit, page, expanded: true });
 
   const getContent = () => {
     switch (true) {
@@ -116,7 +112,7 @@ const Main = () => {
               {search ? `Results for "${search}"` : 'All Characters'}
             </h2>
 
-            <button onClick={refreshHandle} className={styles.button}>
+            <button onClick={refetch} className={styles.button}>
               Refresh
             </button>
           </div>

@@ -53,9 +53,4 @@ export const starWarsApi = createApi({
   }),
 });
 
-export const {
-  useGetItemsQuery,
-  useGetItemQuery,
-  useLazyGetItemQuery,
-  useLazyGetItemsQuery,
-} = starWarsApi;
+export const { useGetItemsQuery, useGetItemQuery } = starWarsApi;
