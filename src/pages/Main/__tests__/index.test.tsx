@@ -1,27 +1,19 @@
-import { screen, fireEvent, waitFor } from '@testing-library/react';
-import { vi, describe, it, expect, beforeEach, beforeAll } from 'vitest';
-import { defineGlobals, mockCharacter } from '../../../../tests/setup';
-import { routes } from '../../../router';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { http, HttpResponse } from 'msw';
 import { createMemoryRouter, RouterProvider } from 'react-router';
-import { MAIN_ROUTE } from '../../../constants';
-import { Stub } from '../../../router/utils';
-import { renderWithProviders } from '../../../store/util';
+import { server } from 'src/__mocks__/server';
+import { defineGlobals } from 'tests/setup';
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { MAIN_ROUTE } from '#constants/index';
+import { routes } from '#router/index';
+import { Stub } from '#router/utils';
+import { renderWithProviders } from '#store/util';
 
 const SEARCHED_TEXT = 'Luke Skywalker';
 const SEARCHED_TERM = 'Luke';
 
 describe('Main Component', () => {
-  const responseMock = {
-    results: [mockCharacter].map((character) => ({
-      properties: character,
-      uid: '1',
-    })),
-    total_records: 101,
-    page: 1,
-    limit: 10,
-    total_pages: 10,
-  };
-
   beforeAll(() => {
     defineGlobals();
   });
@@ -32,11 +24,6 @@ describe('Main Component', () => {
   });
 
   it('makes initial API call on component mount and handles search term from localStorage', async () => {
-    vi.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: async () => responseMock,
-    } as Response);
-
     localStorage.setItem('swapiSearch', SEARCHED_TERM);
 
     renderWithProviders(<Stub initialEntries={['/main']} />);
@@ -47,66 +34,7 @@ describe('Main Component', () => {
     });
   });
 
-  it('manages loading states during API calls', async () => {
-    vi.spyOn(global, 'fetch').mockImplementation(
-      () =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            resolve({
-              ok: true,
-              json: async () => ({ results: [] }),
-            } as Response);
-          }, 100);
-        })
-    );
-
-    renderWithProviders(<Stub initialEntries={['/main']} />);
-    expect(screen.getByText(/searching.../i)).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(screen.queryByText(/searching.../i)).not.toBeInTheDocument();
-    });
-  });
-
-  it('calls API with correct parameters and handles successful API responses', async () => {
-    vi.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: async () => responseMock,
-    } as Response);
-
-    renderWithProviders(<Stub initialEntries={['/main']} />);
-
-    const input = screen.getByTestId('search-input');
-    const button = screen.getByTestId('search-button');
-
-    fireEvent.change(input, { target: { value: SEARCHED_TERM } });
-    fireEvent.click(button);
-
-    await waitFor(() => {
-      expect(screen.getByText(SEARCHED_TEXT)).toBeInTheDocument();
-    });
-  });
-
-  it('handles API error responses', async () => {
-    vi.spyOn(global, 'fetch').mockResolvedValue({
-      ok: false,
-      status: 500,
-      json: async () => ({}),
-    } as Response);
-
-    renderWithProviders(<Stub initialEntries={['/main']} />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId('error-message')).toBeInTheDocument();
-    });
-  });
-
   it('saves search term to localStorage when searching', async () => {
-    vi.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: async () => responseMock,
-    } as Response);
-
     renderWithProviders(<Stub initialEntries={['/main']} />);
 
     const input = screen.getByTestId('search-input');
@@ -123,11 +51,6 @@ describe('Main Component', () => {
   });
 
   it('handle pagination page change', async () => {
-    vi.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: async () => responseMock,
-    } as Response);
-
     const router = createMemoryRouter(routes, {
       initialEntries: [`${MAIN_ROUTE}?page=1`],
     });
@@ -142,6 +65,50 @@ describe('Main Component', () => {
       fireEvent.click(nextPaginationButton);
 
       expect(router.state.location.search).toBe('?page=2');
+    });
+  });
+
+  it('calls API with correct parameters and handles successful API responses', async () => {
+    renderWithProviders(<Stub initialEntries={['/main']} />);
+
+    const input = screen.getByTestId('search-input');
+    const button = screen.getByTestId('search-button');
+
+    fireEvent.change(input, { target: { value: SEARCHED_TERM } });
+    fireEvent.click(button);
+
+    await waitFor(() => {
+      expect(screen.getByText(SEARCHED_TEXT)).toBeInTheDocument();
+    });
+  });
+
+  it('manages loading states during API calls', async () => {
+    server.use(
+      http.get('https://www.swapi.tech/api/people', async () => {
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        return HttpResponse.json({ results: [] });
+      })
+    );
+
+    renderWithProviders(<Stub initialEntries={['/main']} />);
+    expect(screen.getByText(/searching.../i)).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.queryByText(/searching.../i)).not.toBeInTheDocument();
+    });
+  });
+
+  it('handles API error responses', async () => {
+    server.use(
+      http.get('https://www.swapi.tech/api/people', () => {
+        return new HttpResponse(null, { status: 500 });
+      })
+    );
+
+    renderWithProviders(<Stub initialEntries={['/main']} />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-message')).toBeInTheDocument();
     });
   });
 });

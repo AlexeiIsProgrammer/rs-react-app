@@ -1,8 +1,9 @@
 import { screen } from '@testing-library/react';
-import { describe, it, expect, beforeAll } from 'vitest';
-import { Stub } from '../../../router/utils';
-import { renderWithProviders } from '../../../store/util';
-import { defineGlobals } from '../../../../tests/setup';
+import { defineGlobals } from 'tests/setup';
+import { beforeAll, describe, expect, it } from 'vitest';
+
+import { Stub } from '#router/utils';
+import { renderWithProviders } from '#store/util';
 
 describe('About page', () => {
   beforeAll(() => {

@@ -41,15 +41,6 @@
 .panelTitle {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-right: auto;
-}
-
-.errorMessage {
-  padding: 1rem;
-  background-color: #fee2e2;
-  color: #b91c1c;
-  border-radius: 0.375rem;
-  border: 0.063rem solid #fca5a5;
 }
 
 .selectionPanel {
@@ -88,4 +79,10 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+}
+
+.headerPanel {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
 }

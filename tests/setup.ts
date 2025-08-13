@@ -1,5 +1,10 @@
 import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+
+import { afterEach } from 'node:test';
+
+import { afterAll, beforeAll, vi } from 'vitest';
+
+import { server } from '../src/__mocks__/server';
 
 export const mockCharacter = {
   name: 'Luke Skywalker',
@@ -42,3 +47,7 @@ export const defineGlobals = () => {
     }),
   });
 };
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());

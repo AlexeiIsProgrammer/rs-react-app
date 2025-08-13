@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import { Stub } from '../../../router/utils';
+import { describe, expect, it } from 'vitest';
+
+import { Stub } from '#router/utils';
 
 describe('Not found page', () => {
   it('displays 404 text if page is not exists', () => {

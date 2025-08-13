@@ -1,6 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { vi, describe, it, beforeEach, expect } from 'vitest';
-import { StubProvider } from '../../../router/utils';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { StubProvider } from '#router/utils';
+
 import Pagination from '..';
 
 describe('Pagination Component', () => {

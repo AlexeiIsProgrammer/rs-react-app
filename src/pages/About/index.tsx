@@ -1,7 +1,9 @@
 import { Link } from 'react-router';
-import alex from '../../assets/alex.webp';
-import styles from './About.module.scss';
+
+import alex from '#assets/alex.webp';
+
 import ThemeButton from '../../components/ThemeButton';
+import styles from './About.module.scss';
 
 const About = () => {
   const name = 'Alexei Shmulevtsov';
