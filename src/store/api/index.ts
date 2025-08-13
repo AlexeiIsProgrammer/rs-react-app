@@ -11,7 +11,6 @@ import type { GetItemRequest, GetItemsRequest } from './types';
 
 export const starWarsApi = createApi({
   reducerPath: 'starWarsApi',
-
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://www.swapi.tech/api/',
     headers: {
@@ -19,6 +18,7 @@ export const starWarsApi = createApi({
       Accept: 'application/json',
     },
   }),
+  keepUnusedDataFor: 300,
   endpoints: (build) => ({
     getItems: build.query<GetItemsResponse, GetItemsRequest>({
       query: (params) => ({
