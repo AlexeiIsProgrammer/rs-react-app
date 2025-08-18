@@ -1,6 +1,9 @@
-import { useLocation, useNavigate, useParams } from 'react-router';
+'use client';
 
-import Close from '#assets/close.svg?react';
+import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import Close from '#assets/close.svg';
 import { MAIN_ROUTE } from '#constants/index';
 import { useGetItemQuery } from '#store/api';
 
@@ -8,13 +11,11 @@ import Data from './Data';
 import Error from './Error';
 import styles from './Item.module.scss';
 import Loading from './Loading';
+import type { ItemProps } from './types';
 
-const Item = () => {
-  const { detailsId } = useParams();
-  const navigate = useNavigate();
-  const { search } = useLocation();
-
-  const id = detailsId || '';
+const Item = ({ detailsId: id }: ItemProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const {
     data,
@@ -28,7 +29,7 @@ const Item = () => {
   const isLoading = isGetItemLoading || isGetItemFetching;
 
   const closePanel = () => {
-    navigate({ pathname: MAIN_ROUTE, search });
+    router.push(`${MAIN_ROUTE}?${searchParams}`);
   };
 
   const getContent = () => {
@@ -57,7 +58,7 @@ const Item = () => {
           className={styles.closeButton}
           aria-label="Close panel"
         >
-          <Close />
+          <Image width="20" height="20" alt="close-button" src={Close.src} />
         </button>
         <div className={styles.header}>
           <h3 className={styles.title}>Character Details</h3>

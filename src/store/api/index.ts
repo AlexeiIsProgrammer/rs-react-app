@@ -1,4 +1,6 @@
+import type { Action, PayloadAction } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { HYDRATE } from 'next-redux-wrapper';
 
 import type {
   GetItemResponse,
@@ -7,7 +9,12 @@ import type {
   StarWarsGetItemsResponse,
 } from '#types/interfaces';
 
+import type { RootState } from '..';
 import type { GetItemRequest, GetItemsRequest } from './types';
+
+function isHydrateAction(action: Action): action is PayloadAction<RootState> {
+  return action.type === HYDRATE;
+}
 
 export const starWarsApi = createApi({
   reducerPath: 'starWarsApi',
@@ -19,6 +26,11 @@ export const starWarsApi = createApi({
     },
   }),
   keepUnusedDataFor: 300,
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (isHydrateAction(action)) {
+      return action.payload[reducerPath];
+    }
+  },
   endpoints: (build) => ({
     getItems: build.query<GetItemsResponse, GetItemsRequest>({
       query: (params) => ({

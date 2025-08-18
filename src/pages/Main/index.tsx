@@ -1,11 +1,6 @@
-import { useMemo, useState } from 'react';
-import {
-  Link,
-  Outlet,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from 'react-router';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useMemo, useState } from 'react';
 
 import CardList from '#components/CardList';
 import Pagination from '#components/Pagination';
@@ -28,16 +23,26 @@ import styles from './Main.module.scss';
 
 const Main = () => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const selectedItems = useAppSelector(selectedItemsSelector);
   const areSelectedItemsCount = useAppSelector(areSelectedItemsCountSelector);
 
   const [search, setSearch] = useState<string>(value);
   const [limit] = useState<number>(10);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = useMemo(() => +(searchParams.get('page') || 1), [searchParams]);
+  const page = useMemo(() => +(searchParams?.get('page') || 1), [searchParams]);
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams?.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   const {
     data,
@@ -56,7 +61,9 @@ const Main = () => {
   const isLoading = isGetItemsLoading || isGetItemsFetching;
 
   const onPageChange = (currentPage: number) => {
-    setSearchParams({ page: currentPage.toString() });
+    router.push(
+      `${pathname}?${createQueryString('page', currentPage.toString())}`
+    );
   };
 
   const handleSearch = (term: string): void => {
@@ -64,8 +71,7 @@ const Main = () => {
     setSearch(term);
   };
 
-  const onMainPanelClick = () =>
-    navigate({ pathname: MAIN_ROUTE, search: location.search });
+  const onMainPanelClick = () => router.push(`${MAIN_ROUTE}?${searchParams}`);
 
   const href = useMemo(() => getCSVHref(selectedItems), [selectedItems]);
   const download = `${areSelectedItemsCount}_items.csv`;
@@ -92,7 +98,7 @@ const Main = () => {
       <div className={styles.header}>
         <h1 className={styles.title}>Star Wars Character Search SSR</h1>
         <p>
-          <Link to="/about" className={styles.aboutLink}>
+          <Link href="/about" className={styles.aboutLink}>
             About me
           </Link>
 
@@ -118,7 +124,7 @@ const Main = () => {
           </div>
           {getContent()}
         </div>
-        <Outlet />
+        {/* <Outlet /> */}
       </div>
 
       <Pagination

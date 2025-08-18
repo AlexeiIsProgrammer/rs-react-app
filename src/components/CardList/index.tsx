@@ -1,5 +1,8 @@
+'use client';
+
+import { useParams, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { type MouseEvent, useCallback, useMemo } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router';
 
 import { MAIN_ROUTE } from '#constants/index';
 import { useAppDispatch, useAppSelector } from '#store/index';
@@ -16,18 +19,20 @@ import type { CardListProps } from './types';
 
 const CardList = ({ characters, isLoading }: CardListProps) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { search } = useLocation();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const selectedItems = useAppSelector(selectedItemsSelector);
 
-  const { detailsId: id } = useParams();
+  const params = useParams();
+
+  const id = params?.detailsId as string;
 
   const onCardClickHandle = (id: string) => (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     e.preventDefault();
 
-    navigate({ pathname: `${MAIN_ROUTE}/${id}`, search });
+    router.push(`${MAIN_ROUTE}/${id}?${searchParams}`);
   };
 
   const onCheckboxChange =

@@ -1,3 +1,5 @@
+'use client';
+
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
   type TypedUseSelectorHook,

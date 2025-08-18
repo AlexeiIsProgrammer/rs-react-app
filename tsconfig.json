@@ -1,10 +1,59 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
   "compilerOptions": {
-    "types": ["vitest/globals", "@testing-library/jest-dom/vitest"]
-  }
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "preserve",
+    "allowJs": true,
+
+    /* Linting */
+    "strict": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "strictNullChecks": true,
+
+    "plugins": [
+      {
+        "name": "next"
+      },
+      { "name": "typescript-plugin-css-modules" }
+    ],
+
+    "baseUrl": ".",
+    "paths": {
+      "#app/*": ["./src/app/*"],
+      "#assets/*": ["./src/assets/*"],
+      "#components/*": ["./src/components/*"],
+      "#constants/*": ["./src/constants/*"],
+      "#context/*": ["./src/context/*"],
+      "#hooks/*": ["./src/hooks/*"],
+      "#mocks/*": ["./src/mocks/*"],
+      "#pages/*": ["./src/pages/*"],
+      "#store/*": ["./src/store/*"],
+      "#types/*": ["./src/types/*"],
+      "#utils/*": ["./src/utils/*"]
+    }
+  },
+
+  "include": ["src", "./dist/types/**/*.ts", "./next-env.d.ts"],
+  "exclude": ["./node_modules"]
 }

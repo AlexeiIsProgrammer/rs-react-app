@@ -1,29 +1,42 @@
 {
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "esModuleInterop": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
     "useDefineForClassFields": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ESNext",
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
+    "allowJs": true,
 
     /* Linting */
-    "strict": true,
+    "strict": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "strictNullChecks": true,
+
+    "plugins": [
+      {
+        "name": "next"
+      },
+      { "name": "typescript-plugin-css-modules" }
+    ],
 
     "baseUrl": ".",
     "paths": {
@@ -35,18 +48,12 @@
       "#hooks/*": ["./src/hooks/*"],
       "#mocks/*": ["./src/mocks/*"],
       "#pages/*": ["./src/pages/*"],
-      "#router/*": ["./src/router/*"],
       "#store/*": ["./src/store/*"],
       "#types/*": ["./src/types/*"],
       "#utils/*": ["./src/utils/*"]
     }
   },
 
-  "include": [
-    "src",
-    "tests",
-    "@testing-library/jest-dom",
-    "vite.config.ts",
-    "src/vite-env.d.ts"
-  ]
+  "include": ["src", "tests", "./dist/types/**/*.ts", "./next-env.d.ts"],
+  "exclude": ["./node_modules"]
 }
