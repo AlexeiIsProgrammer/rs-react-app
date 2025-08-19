@@ -1,11 +1,7 @@
-import '../../index.css';
+import dynamic from 'next/dynamic';
 
-import { ClientOnly } from './client';
+const Main = dynamic(() => import('../../pages/Main'));
 
-export function generateStaticParams() {
-  return [{ slug: [''] }];
-}
-
-export default function Page() {
-  return <ClientOnly />;
+export default async function Page() {
+  return <Main />;
 }

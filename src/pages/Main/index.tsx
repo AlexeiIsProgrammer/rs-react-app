@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
@@ -21,7 +23,7 @@ import getCSVHref from '#utils/getCSVHref';
 import Error from './Error';
 import styles from './Main.module.scss';
 
-const Main = () => {
+const Main = ({ children }: { children?: React.ReactNode }) => {
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
   const router = useRouter();
   const pathname = usePathname();
@@ -124,7 +126,7 @@ const Main = () => {
           </div>
           {getContent()}
         </div>
-        {/* <Outlet /> */}
+        {children}
       </div>
 
       <Pagination

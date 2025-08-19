@@ -1,8 +1,7 @@
-import { ClientOnly } from './client';
+import dynamic from 'next/dynamic';
 
-export function generateStaticParams() {
-  return [{ detailsId: '1' }, { detailsId: '2' }, { detailsId: '3' }];
-}
+const Item = dynamic(() => import('../../../pages/Item'));
+const Main = dynamic(() => import('../../../pages/Main'));
 
 export default async function Page({
   params,
@@ -10,5 +9,10 @@ export default async function Page({
   params: Promise<{ detailsId: string }>;
 }) {
   const { detailsId } = await params;
-  return <ClientOnly detailsId={detailsId || ''} />;
+
+  return (
+    <Main>
+      <Item detailsId={detailsId} />
+    </Main>
+  );
 }

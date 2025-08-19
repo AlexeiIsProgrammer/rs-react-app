@@ -1,3 +1,5 @@
+import MainLayout from '../main/layout';
+
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <span>{children}</span>;
+  return <MainLayout>{children}</MainLayout>;
 }

@@ -1,9 +1,7 @@
-import '../index.css';
+import './global.css';
 
 import type { Metadata } from 'next';
 import { Courier_Prime } from 'next/font/google';
-
-import Layout from './main/layout';
 
 export const metadata: Metadata = {
   title: 'React Star Wars App',
@@ -24,9 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={courierPrime.className}>
       <body>
-        <div id="root">
-          <Layout>{children}</Layout>
-        </div>
+        <div id="root">{children}</div>
       </body>
     </html>
   );

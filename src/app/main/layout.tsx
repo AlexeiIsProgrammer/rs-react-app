@@ -1,11 +1,13 @@
 'use client';
 
+import React from 'react';
 import { Provider } from 'react-redux';
-import ErrorBoundary from 'src/components/ErrorBoundary';
-import { ThemeProvider } from 'src/context/ThemeContext';
-import { setupStore } from 'src/store';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+import ErrorBoundary from '#components/ErrorBoundary';
+import { ThemeProvider } from '#context/ThemeContext';
+import { setupStore } from '#store/index';
+
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Provider store={setupStore()}>
       <ThemeProvider>
@@ -13,4 +15,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </ThemeProvider>
     </Provider>
   );
-}
+};
+
+export default Layout;

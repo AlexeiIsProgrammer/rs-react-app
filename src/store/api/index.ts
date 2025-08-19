@@ -1,6 +1,4 @@
-import type { Action, PayloadAction } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { HYDRATE } from 'next-redux-wrapper';
 
 import type {
   GetItemResponse,
@@ -9,12 +7,8 @@ import type {
   StarWarsGetItemsResponse,
 } from '#types/interfaces';
 
-import type { RootState } from '..';
+import { isHydrateAction } from '..';
 import type { GetItemRequest, GetItemsRequest } from './types';
-
-function isHydrateAction(action: Action): action is PayloadAction<RootState> {
-  return action.type === HYDRATE;
-}
 
 export const starWarsApi = createApi({
   reducerPath: 'starWarsApi',

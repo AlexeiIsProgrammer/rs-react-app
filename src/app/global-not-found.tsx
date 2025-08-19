@@ -1,5 +1,3 @@
-import '../index.css';
-
 import type { Metadata } from 'next';
 import { Courier_Prime } from 'next/font/google';
 
