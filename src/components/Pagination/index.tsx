@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 import LeftArrow from '#assets/left-arrow.svg';
@@ -15,6 +16,8 @@ const Pagination = ({
   onPageChange,
   maxVisiblePages = 5,
 }: PaginationProps) => {
+  const t = useTranslations('HomePage');
+
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const firstResultsIndexPerCurrentPage = (currentPage - 1) * itemsPerPage + 1;
@@ -45,15 +48,16 @@ const Pagination = ({
   return (
     <div className={styles.paginationContainer}>
       <div className={styles.resultsText}>
-        Showing
+        {t('showing')}
         <span className={styles.fontMedium}>
           {firstResultsIndexPerCurrentPage}
         </span>
-        to
+        {t('to')}
         <span className={styles.fontMedium}>
           {maxResultsIndexPerCurrentPage}
         </span>
-        of <span className={styles.fontMedium}>{totalItems}</span> results
+        {t('of')} <span className={styles.fontMedium}>{totalItems}</span>{' '}
+        {t('results')}
       </div>
       <nav className={styles.paginationNav} aria-label="Pagination">
         <button
@@ -70,7 +74,7 @@ const Pagination = ({
             width="20"
             src={LeftArrow.src}
           />
-          <span className={styles.mobileText}>Previous</span>
+          <span className={styles.mobileText}>{t('previous')}</span>
         </button>
 
         {currentPage > Math.ceil(maxVisiblePages / 2) &&
@@ -122,7 +126,7 @@ const Pagination = ({
           disabled={currentPage === totalPages}
           className={`${styles.paginationButton} ${styles.rightButton}`}
         >
-          <span className={styles.mobileText}>Next</span>
+          <span className={styles.mobileText}>{t('next')}</span>
 
           <Image
             alt="right-button"

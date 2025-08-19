@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import Close from '#assets/close.svg';
 import { MAIN_ROUTE } from '#constants/index';
@@ -14,6 +15,7 @@ import Loading from './Loading';
 import type { ItemProps } from './types';
 
 const Item = ({ detailsId: id }: ItemProps) => {
+  const t = useTranslations('HomePage');
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -61,9 +63,9 @@ const Item = ({ detailsId: id }: ItemProps) => {
           <Image width="20" height="20" alt="close-button" src={Close.src} />
         </button>
         <div className={styles.header}>
-          <h3 className={styles.title}>Character Details</h3>
+          <h3 className={styles.title}>{t('details')}</h3>
           <button onClick={refetch} className={styles.button}>
-            Refresh
+            {t('refresh')}
           </button>
         </div>
         {getContent()}

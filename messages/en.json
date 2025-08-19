@@ -10,6 +10,13 @@
     "items": "items are selected",
     "searching": "Searching...",
     "search": "Search",
-    "search_characters": "Search characters..."
+    "search_characters": "Search characters...",
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "results_pagination": "results",
+    "previous": "previous",
+    "next": "next",
+    "details": "Character details"
   }
 }

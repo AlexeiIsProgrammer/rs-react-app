@@ -10,6 +10,13 @@
     "items": "штук выбрано",
     "searching": "Поиск...",
     "search": "Искать",
-    "search_characters": "Искать персонажей..."
+    "search_characters": "Искать персонажей...",
+    "showing": "Показано",
+    "to": "до",
+    "of": "из",
+    "results_pagination": "результатов",
+    "previous": "предыдущая",
+    "next": "следующая",
+    "details": "Детальная характеристика"
   }
 }
