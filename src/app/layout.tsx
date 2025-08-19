@@ -2,6 +2,8 @@ import './global.css';
 
 import type { Metadata } from 'next';
 import { Courier_Prime } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 
 export const metadata: Metadata = {
   title: 'React Star Wars App',
@@ -14,15 +16,17 @@ const courierPrime = Courier_Prime({
   subsets: ['latin'],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className={courierPrime.className}>
+    <html lang={locale} className={courierPrime.className}>
       <body>
-        <div id="root">{children}</div>
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 
 import CardList from '#components/CardList';
+import { LanguageSwitcher } from '#components/LanguageSwitcher';
 import Pagination from '#components/Pagination';
 import Search from '#components/Search';
 import Spinner from '#components/Spinner';
@@ -24,6 +26,8 @@ import Error from './Error';
 import styles from './Main.module.scss';
 
 const Main = ({ children }: { children?: React.ReactNode }) => {
+  const t = useTranslations('HomePage');
+
   const { value, setValue } = useLocalStorage(LOCAL_STORAGE_SEARCH);
   const router = useRouter();
   const pathname = usePathname();
@@ -98,14 +102,16 @@ const Main = ({ children }: { children?: React.ReactNode }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Star Wars Character Search SSR</h1>
-        <p>
+        <h1 className={styles.title}>{t('title')}</h1>
+        <div>
           <Link href="/about" className={styles.aboutLink}>
-            About me
+            {t('about')}
           </Link>
 
           <ThemeButton />
-        </p>
+
+          <LanguageSwitcher />
+        </div>
         <Search
           initialValue={search}
           onSearch={handleSearch}
@@ -117,11 +123,11 @@ const Main = ({ children }: { children?: React.ReactNode }) => {
         <div onClick={onMainPanelClick} className={styles.mainPanel}>
           <div className={styles.headerPanel}>
             <h2 className={styles.panelTitle}>
-              {search ? `Results for "${search}"` : 'All Characters'}
+              {search ? `${t('results')} "${search}"` : t('all_characters')}
             </h2>
 
             <button onClick={refetch} className={styles.button}>
-              Refresh
+              {t('refresh')}
             </button>
           </div>
           {getContent()}
@@ -139,13 +145,15 @@ const Main = ({ children }: { children?: React.ReactNode }) => {
       {areSelectedItemsCount !== 0 && (
         <div className={styles.selectionPanel}>
           <h4>
-            <b>{areSelectedItemsCount} items are selected</b>
+            <b>
+              {areSelectedItemsCount} {t('items')}
+            </b>
           </h4>
           <button onClick={unselectAllHandle} className={styles.button}>
-            Unselect all
+            {t('unselect')}
           </button>
           <a href={href} download={download} className={styles.button}>
-            Download
+            {t('download')}
           </a>
         </div>
       )}
