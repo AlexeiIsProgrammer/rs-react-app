@@ -1,11 +1,11 @@
+import { useTranslations } from 'next-intl';
 import React, { type FormEvent, useState } from 'react';
-
-import { INPUT_PLACEHOLDER } from '#constants/index';
 
 import styles from './Search.module.scss';
 import type { SearchProps } from './types';
 
 function Search({ initialValue, onSearch, loading }: SearchProps) {
+  const t = useTranslations('HomePage');
   const [inputValue, setInputValue] = useState(initialValue);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -25,7 +25,7 @@ function Search({ initialValue, onSearch, loading }: SearchProps) {
           type="text"
           value={inputValue}
           onChange={handleChange}
-          placeholder={INPUT_PLACEHOLDER}
+          placeholder={t('search_characters')}
           className={styles.searchInput}
           disabled={loading}
           data-testid="search-input"
@@ -36,7 +36,7 @@ function Search({ initialValue, onSearch, loading }: SearchProps) {
           disabled={loading}
           data-testid="search-button"
         >
-          {loading ? 'Searching...' : 'Search'}
+          {loading ? t('searching') : t('search')}
         </button>
       </form>
     </div>

@@ -1,4 +1,10 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import {
+  type Action,
+  combineReducers,
+  configureStore,
+  type PayloadAction,
+} from '@reduxjs/toolkit';
+import { HYDRATE } from 'next-redux-wrapper';
 import {
   type TypedUseSelectorHook,
   useDispatch,
@@ -13,6 +19,13 @@ const rootReducer = combineReducers({
   [starWarsApi.reducerPath]: starWarsApi.reducer,
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isHydrateAction(action: Action): action is PayloadAction<any> {
+  return action.type === HYDRATE;
+}
+
 export const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
@@ -22,7 +35,6 @@ export const setupStore = (preloadedState?: Partial<RootState>) => {
   });
 };
 
-export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 
 export type AppDispatch = AppStore['dispatch'];

@@ -1,0 +1,22 @@
+{
+  "HomePage": {
+    "title": "Star Wars Character Search SSR",
+    "about": "About",
+    "refresh": "Refresh",
+    "results": "Results for",
+    "all_characters": "All Characters",
+    "unselect": "Unselect All",
+    "download": "Download",
+    "items": "items are selected",
+    "searching": "Searching...",
+    "search": "Search",
+    "search_characters": "Search characters...",
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "results_pagination": "results",
+    "previous": "previous",
+    "next": "next",
+    "details": "Character details"
+  }
+}

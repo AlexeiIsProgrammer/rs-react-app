@@ -4,9 +4,9 @@ import type { ErrorProps } from './types';
 const Error = ({ error }: ErrorProps) => {
   return (
     <div className={styles.errorMessage} data-testid="error-message">
-      {error.status === 404
+      {'status' in error && error.status === 404
         ? 'Character not found'
-        : `Status: ${error.status}, Message: ${
+        : `Status: ${'status' in error && error.status}, Message: ${
             'data' in error &&
             error.data &&
             typeof error.data === 'object' &&

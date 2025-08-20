@@ -1,8 +1,10 @@
-import { Link } from 'react-router';
+'use client';
+
+import Link from 'next/link';
 
 import alex from '#assets/alex.webp';
+import ThemeButton from '#components/ThemeButton';
 
-import ThemeButton from '../../components/ThemeButton';
 import styles from './About.module.scss';
 
 const About = () => {
@@ -23,7 +25,7 @@ const About = () => {
           </p>
           <div className={styles.authorInfo}>
             <div className={styles.avatar}>
-              <img src={alex} alt={name} />
+              <img src={alex.src} alt={name} />
             </div>
             <div>
               <h3 className={styles.authorName}>{name}</h3>
@@ -50,7 +52,7 @@ const About = () => {
         </div>
 
         <div className={styles.divider}>
-          <Link title="Back to main" to="/" className={styles.link}>
+          <Link title="Back to main" href="/" className={styles.link}>
             ← Back to Main Application
           </Link>
         </div>

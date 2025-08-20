@@ -1,6 +1,7 @@
-import { Link } from 'react-router';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import NotFoundSVG from '#assets/not-found.svg?react';
+import NotFoundSVG from '#assets/not-found.svg';
 
 import styles from './NotFound.module.scss';
 
@@ -14,9 +15,15 @@ const NotFound = () => {
         moved.
       </p>
       <div className={styles.imageContainer}>
-        <NotFoundSVG title="Not found illustration" />
+        <Image
+          alt="not-found"
+          title="Not found illustration"
+          height="200"
+          width="200"
+          src={NotFoundSVG.src}
+        />
       </div>
-      <Link to="/" className={styles.homeLink}>
+      <Link href="/" className={styles.homeLink}>
         Go Back Home
       </Link>
     </div>

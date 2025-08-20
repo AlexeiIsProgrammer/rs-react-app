@@ -4,6 +4,7 @@ type UseLocalStorageReturn = {
 };
 
 function useLocalStorage(key: string): UseLocalStorageReturn {
+  if (typeof window === 'undefined') return { value: '', setValue: () => {} };
   const value: string = localStorage.getItem(key) || '';
 
   const setValue = (value: string) => localStorage.setItem(key, value);

@@ -42,10 +42,6 @@ export default tseslint.config(
       'simple-import-sort/exports': 'error',
       'import/order': 'off',
       "jest-formatting/padding-around-test-blocks": "error",
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
       'react-compiler/react-compiler': 'error',
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,

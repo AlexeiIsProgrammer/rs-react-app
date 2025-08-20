@@ -7,6 +7,7 @@ import type {
   StarWarsGetItemsResponse,
 } from '#types/interfaces';
 
+import { isHydrateAction } from '..';
 import type { GetItemRequest, GetItemsRequest } from './types';
 
 export const starWarsApi = createApi({
@@ -19,6 +20,11 @@ export const starWarsApi = createApi({
     },
   }),
   keepUnusedDataFor: 300,
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (isHydrateAction(action)) {
+      return action.payload[reducerPath];
+    }
+  },
   endpoints: (build) => ({
     getItems: build.query<GetItemsResponse, GetItemsRequest>({
       query: (params) => ({
