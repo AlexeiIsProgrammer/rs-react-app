@@ -1,5 +1,5 @@
 export type FormFieldProps = {
-  label: string;
+  label?: string;
   htmlFor: string;
   error?: string;
   children: React.ReactNode;
