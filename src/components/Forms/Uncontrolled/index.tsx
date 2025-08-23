@@ -1,7 +1,7 @@
 import React, {useRef, useState} from "react";
 
-import {addSubmission, formSelector} from "../../store/slices/formSlice";
-import {FormField} from "../UI/FormField";
+import {addSubmission, formSelector} from "../../../store/slices/formSlice";
+import {FormField} from "../../UI/FormField";
 import {
   validateName,
   validateAge,
@@ -13,11 +13,11 @@ import {
   validatePicture,
   validateCountry,
   checkPasswordStrength,
-} from "../../utils/validation";
-import {toBase64} from "../../utils/toBase64";
-import {ValidationErrors} from "../../types";
-import styles from "./forms.module.scss";
-import {useAppDispatch, useAppSelector} from "../../store";
+} from "../../../utils/validation";
+import {toBase64} from "../../../utils/toBase64";
+import {ValidationErrors} from "../../../types";
+import styles from "../Forms.module.scss";
+import {useAppDispatch, useAppSelector} from "../../../store";
 
 interface UncontrolledFormProps {
   onClose: () => void;
