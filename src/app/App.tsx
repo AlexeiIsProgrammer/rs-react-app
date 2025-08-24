@@ -1,15 +1,15 @@
 import {useState} from "react";
-import {useSelector} from "react-redux";
-import {RootState} from "../store";
+import {useAppSelector} from "../store";
 import Modal from "../components/Modal";
 import styles from "./App.module.scss";
 import Uncontrolled from "../components/Forms/Uncontrolled";
 import ReactHook from "../components/Forms/ReactHook";
 import SubmitTile from "../components/SubmitTile";
+import {formSelector} from "../store/slices/formSlice";
 
 const App = () => {
   const [activeModal, setActiveModal] = useState<"uncontrolled" | "controlled" | null>(null);
-  const submissions = useSelector((state: RootState) => state.form.submissions);
+  const {submissions} = useAppSelector(formSelector);
 
   return (
     <div className={styles.mainPage}>

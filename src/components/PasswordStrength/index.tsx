@@ -5,7 +5,9 @@ const PasswordStrength = ({score}: PasswordStrengthProps) => {
   if (!score) return null;
 
   return (
-    <div className={styles.passwordStrength}>
+    <div
+      className={styles.passwordStrength}
+      title="strength">
       <div className={styles.strengthMeter}>
         <div className={`${styles.strengthBar} ${score >= 1 ? styles.active : ""}`}></div>
         <div className={`${styles.strengthBar} ${score >= 2 ? styles.active : ""}`}></div>

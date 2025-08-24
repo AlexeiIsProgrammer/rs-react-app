@@ -6,11 +6,11 @@ export const validateName = (name: string): string | undefined => {
   return undefined;
 };
 
-export const validateAge = (age: number): string | undefined => {
+export const validateAge = (age: number | string): string | undefined => {
   if (!age && age !== 0) return "Age is required";
-  if (isNaN(age)) return "Age must be a number";
-  if (age < 0) return "Age cannot be negative";
-  if (age > 150) return "Age seems unrealistic";
+  if (isNaN(+age)) return "Age must be a number";
+  if (+age < 0) return "Age cannot be negative";
+  if (+age > 150) return "Age seems unrealistic";
   return undefined;
 };
 
