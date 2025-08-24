@@ -18,12 +18,10 @@ import {toBase64} from "../../../utils/toBase64";
 import {ValidationErrors} from "../../../types";
 import styles from "../Forms.module.scss";
 import {useAppDispatch, useAppSelector} from "../../../store";
+import {UncontrolledProps} from "./types";
+import PasswordStrength from "../../PasswordStrength";
 
-interface UncontrolledFormProps {
-  onClose: () => void;
-}
-
-const Uncontrolled: React.FC<UncontrolledFormProps> = ({onClose}) => {
+const Uncontrolled = ({onClose}: UncontrolledProps) => {
   const dispatch = useAppDispatch();
   const formRef = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<ValidationErrors>({});
@@ -93,22 +91,6 @@ const Uncontrolled: React.FC<UncontrolledFormProps> = ({onClose}) => {
     setPasswordStrength(checkPasswordStrength(password));
   };
 
-  const renderPasswordStrength = () => {
-    if (!passwordStrength.score) return null;
-
-    return (
-      <div className={styles.passwordStrength}>
-        <div className={styles.strengthMeter}>
-          <div className={`${styles.strengthBar} ${passwordStrength.score >= 1 ? styles.active : ""}`}></div>
-          <div className={`${styles.strengthBar} ${passwordStrength.score >= 2 ? styles.active : ""}`}></div>
-          <div className={`${styles.strengthBar} ${passwordStrength.score >= 3 ? styles.active : ""}`}></div>
-          <div className={`${styles.strengthBar} ${passwordStrength.score >= 4 ? styles.active : ""}`}></div>
-        </div>
-        <div className={styles.strengthText}>{passwordStrength.score < 2 ? "Weak" : passwordStrength.score < 4 ? "Medium" : "Strong"}</div>
-      </div>
-    );
-  };
-
   return (
     <form
       ref={formRef}
@@ -163,7 +145,7 @@ const Uncontrolled: React.FC<UncontrolledFormProps> = ({onClose}) => {
           className={styles.input}
           onChange={handlePasswordChange}
         />
-        {renderPasswordStrength()}
+        <PasswordStrength score={passwordStrength.score} />
       </FormField>
 
       <FormField

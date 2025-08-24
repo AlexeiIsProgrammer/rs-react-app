@@ -1,4 +1,4 @@
-import styles from "./form-field.module.scss";
+import styles from "./FormField.module.scss";
 import {FormFieldProps} from "./types";
 
 export const FormField = ({label, htmlFor, error, children}: FormFieldProps) => {

@@ -1,7 +1,7 @@
 import {useEffect, useRef} from "react";
 import ReactDOM from "react-dom";
 import {useOutsideClick} from "../../hooks/useOutsideClick";
-import styles from "./modal.module.scss";
+import styles from "./Modal.module.scss";
 import {ModalProps} from "./types";
 
 const Modal = ({isOpen, onClose, children, ariaLabel}: ModalProps) => {
@@ -33,16 +33,16 @@ const Modal = ({isOpen, onClose, children, ariaLabel}: ModalProps) => {
 
   return ReactDOM.createPortal(
     <div
-      className={styles.modalOverlay}
+      className={styles["modal-overlay"]}
       role="dialog"
       aria-modal="true"
       aria-label={ariaLabel}>
       <div
         ref={modalRef}
-        className={styles.modalContent}
+        className={styles["modal-content"]}
         tabIndex={-1}>
         <button
-          className={styles.closeButton}
+          className={styles["close-button"]}
           onClick={onClose}
           aria-label="Close modal">
           &times;

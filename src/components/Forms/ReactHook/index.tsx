@@ -1,7 +1,6 @@
-import React from "react";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import * as yup from "yup";
+
 import {useDispatch} from "react-redux";
 import {addSubmission, formSelector} from "../../../store/slices/formSlice";
 import {FormField} from "../../UI/FormField";
@@ -9,65 +8,16 @@ import {checkPasswordStrength} from "../../../utils/validation";
 import {toBase64} from "../../../utils/toBase64";
 import styles from "../Forms.module.scss";
 import {useAppSelector} from "../../../store";
+import {ReactHookProps} from "./types";
+import schema from "./schema";
+import PasswordStrength from "../../PasswordStrength";
+import {FormValues} from "../../../types";
 
-interface ControlledFormProps {
-  onClose: () => void;
-}
-
-interface FormValues {
-  name: string;
-  age: number;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  gender: string;
-  terms: boolean;
-  picture: FileList;
-  country: string;
-}
-
-const schema = yup.object({
-  name: yup
-    .string()
-    .required("Name is required")
-    .test("first-uppercase", "First letter must be uppercase", (value) => value?.[0] === value?.[0]?.toUpperCase()),
-  age: yup.number().required("Age is required").min(0, "Age cannot be negative").max(150, "Age seems unrealistic"),
-  email: yup.string().required("Email is required").email("Invalid email format"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .test("password-strength", "Password is too weak", (value) => {
-      if (!value) return false;
-      const strength = checkPasswordStrength(value);
-      return strength.score >= 3;
-    }),
-  confirmPassword: yup
-    .string()
-    .required("Please confirm your password")
-    .oneOf([yup.ref("password")], "Passwords do not match"),
-  gender: yup.string().required("Gender is required"),
-  terms: yup.boolean().required("You must accept the terms and conditions").oneOf([true], "You must accept the terms and conditions"),
-  picture: yup
-    .mixed()
-    .required("Picture is required")
-    .test("file-type", "Only JPEG and PNG files are allowed", (value) => {
-      if (!value || !value[0]) return false;
-      return ["image/jpeg", "image/png"].includes(value[0].type);
-    })
-    .test("file-size", "File size must be less than 5MB", (value) => {
-      if (!value || !value[0]) return false;
-      return value[0].size <= 5 * 1024 * 1024;
-    }),
-  country: yup.string().required("Country is required"),
-});
-
-const ControlledForm: React.FC<ControlledFormProps> = ({onClose}) => {
+const ReactHook = ({onClose}: ReactHookProps) => {
   const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
-    control,
     watch,
     formState: {errors, isValid},
   } = useForm<FormValues>({
@@ -102,22 +52,6 @@ const ControlledForm: React.FC<ControlledFormProps> = ({onClose}) => {
     } catch (error) {
       console.error("Failed to process image:", error);
     }
-  };
-
-  const renderPasswordStrength = () => {
-    if (!passwordStrength.score) return null;
-
-    return (
-      <div className={styles.passwordStrength}>
-        <div className={styles.strengthMeter}>
-          <div className={`${styles.strengthBar} ${passwordStrength.score >= 1 ? styles.active : ""}`}></div>
-          <div className={`${styles.strengthBar} ${passwordStrength.score >= 2 ? styles.active : ""}`}></div>
-          <div className={`${styles.strengthBar} ${passwordStrength.score >= 3 ? styles.active : ""}`}></div>
-          <div className={`${styles.strengthBar} ${passwordStrength.score >= 4 ? styles.active : ""}`}></div>
-        </div>
-        <div className={styles.strengthText}>{passwordStrength.score < 2 ? "Weak" : passwordStrength.score < 4 ? "Medium" : "Strong"}</div>
-      </div>
-    );
   };
 
   return (
@@ -172,7 +106,7 @@ const ControlledForm: React.FC<ControlledFormProps> = ({onClose}) => {
           id="password"
           className={styles.input}
         />
-        {renderPasswordStrength()}
+        <PasswordStrength score={passwordStrength.score} />
       </FormField>
 
       <FormField
@@ -273,4 +207,4 @@ const ControlledForm: React.FC<ControlledFormProps> = ({onClose}) => {
   );
 };
 
-export default ControlledForm;
+export default ReactHook;
