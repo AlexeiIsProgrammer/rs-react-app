@@ -8,8 +8,6 @@ import { useData } from '../../hooks/useData';
 import styles from './Dashboard.module.scss';
 
 const Dashboard = () => {
-  console.log('dashboard');
-
   const data = useData();
 
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -29,7 +27,7 @@ const Dashboard = () => {
     'co2_per_capita',
   ]);
 
-  const [selectedYear, setSelectedYear] = useState<number>(2020);
+  const [selectedYear, setSelectedYear] = useState<number>(-1);
 
   const regions = useMemo(() => {
     const regionSet = new Set<string>();
@@ -157,10 +155,10 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (availableYears) {
-      handleYearChange(0);
+    if (availableYears && selectedYear === -1) {
+      handleYearChange(availableYears[0]);
     }
-  }, [availableYears]);
+  }, [availableYears, selectedYear]);
 
   return (
     <div className={styles.dashboard}>

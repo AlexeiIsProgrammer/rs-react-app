@@ -1,4 +1,4 @@
-import { useMemo, memo } from 'react';
+import { useMemo, memo, useState, useRef, useEffect } from 'react';
 import styles from './CountryTable.module.scss';
 import type { CountryTableProps } from './types';
 import type { YearlyData } from '../../hooks/useData';
@@ -11,6 +11,12 @@ const CountryTable = memo(
     onSort,
     sortConfig,
   }: CountryTableProps) => {
+    const [previousYear, setPreviousYear] = useState(selectedYear);
+    const [highlightedCells, setHighlightedCells] = useState<Set<string>>(
+      new Set()
+    );
+    const previousDataRef = useRef<Map<string, any>>(new Map());
+
     const countryYearData = useMemo(() => {
       return countries.map((country) => {
         const yearData =
@@ -33,6 +39,60 @@ const CountryTable = memo(
       }
       return value;
     };
+
+    const isCellHighlighted = (
+      countryName: string,
+      dataKey: string
+    ): boolean => {
+      return highlightedCells.has(`${countryName}-${dataKey}`);
+    };
+
+    useEffect(() => {
+      const currentData = new Map();
+
+      countries.forEach((country) => {
+        const yearData =
+          country.data.find((d) => d.year === previousYear) || {};
+        const keyPrefix = `${country.name}-`;
+
+        Object.entries(yearData).forEach(([key, value]) => {
+          currentData.set(keyPrefix + key, value);
+        });
+      });
+
+      previousDataRef.current = currentData;
+      setPreviousYear(selectedYear);
+    }, [countries, selectedYear]);
+
+    useEffect(() => {
+      if (previousYear === selectedYear) return;
+
+      const newHighlightedCells = new Set<string>();
+      const previousData = previousDataRef.current;
+
+      countries.forEach((country) => {
+        const yearData =
+          country.data.find((d) => d.year === selectedYear) || {};
+        const keyPrefix = `${country.name}-`;
+
+        Object.entries(yearData).forEach(([key, value]) => {
+          const cellKey = keyPrefix + key;
+          const previousValue = previousData.get(cellKey);
+
+          if (value !== previousValue) {
+            newHighlightedCells.add(cellKey);
+          }
+        });
+      });
+
+      setHighlightedCells(newHighlightedCells);
+
+      const timer = setTimeout(() => {
+        setHighlightedCells(new Set());
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }, [countries, selectedYear, previousYear]);
 
     return (
       <div className={styles['table-container']}>
@@ -71,11 +131,24 @@ const CountryTable = memo(
                     )}
                   </div>
                 </td>
-                <td>
+                <td
+                  className={
+                    isCellHighlighted(country.name, 'population')
+                      ? styles.highlight
+                      : ''
+                  }
+                >
                   {formatValue((country as unknown as YearlyData).population)}
                 </td>
                 {selectedColumns.map((column) => (
-                  <td key={column}>
+                  <td
+                    key={column}
+                    className={
+                      isCellHighlighted(country.name, column)
+                        ? styles.highlight
+                        : ''
+                    }
+                  >
                     {formatValue(
                       (country as unknown as YearlyData)[column] as
                         | number

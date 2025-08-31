@@ -24,7 +24,6 @@ export const useData = (): Data => {
   if (cachedData) {
     return cachedData;
   }
-  console.log('cachedData', cachedData);
 
   throw new Promise((resolve, reject) => {
     fetch(FETCH_URL)
